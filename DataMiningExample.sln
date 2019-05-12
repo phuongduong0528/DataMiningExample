@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28809.33
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SequentialPatternMining", "SequentialPatternMining\SequentialPatternMining.csproj", "{A59BBE0F-A551-4907-8610-E3AE901E942C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProgram", "TestProgram\TestProgram.csproj", "{09E235DA-2771-4FEB-AACF-32806892A3C5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A59BBE0F-A551-4907-8610-E3AE901E942C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A59BBE0F-A551-4907-8610-E3AE901E942C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A59BBE0F-A551-4907-8610-E3AE901E942C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A59BBE0F-A551-4907-8610-E3AE901E942C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09E235DA-2771-4FEB-AACF-32806892A3C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09E235DA-2771-4FEB-AACF-32806892A3C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09E235DA-2771-4FEB-AACF-32806892A3C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09E235DA-2771-4FEB-AACF-32806892A3C5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {533F88D1-463C-4EA7-AF30-BCA4D2E57D4B}
+	EndGlobalSection
+EndGlobal
