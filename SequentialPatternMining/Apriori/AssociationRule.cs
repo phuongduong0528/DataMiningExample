@@ -21,6 +21,14 @@ namespace SequentialPatternMining
         {
             return X.IsSubsetOf(input);
         }
+
+        public string GetAssocRule()
+        {
+            string re = $"{X.ToArray().ToString(OctaveArrayFormatProvider.InvariantCulture)} " +
+                $"-> {Y.ToArray().ToString(OctaveArrayFormatProvider.InvariantCulture)}";
+            return re;
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

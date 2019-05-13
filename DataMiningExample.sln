@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SequentialPatternMining", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProgram", "TestProgram\TestProgram.csproj", "{09E235DA-2771-4FEB-AACF-32806892A3C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTransformTest", "DataTransform\DataTransformTest.csproj", "{4CE9BA39-3113-49A7-92DC-F5CECD3B2557}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataMining", "DataMining\DataMining.csproj", "{1EEC249C-8C35-4EEB-A93B-D40AFF13937B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{09E235DA-2771-4FEB-AACF-32806892A3C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09E235DA-2771-4FEB-AACF-32806892A3C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09E235DA-2771-4FEB-AACF-32806892A3C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CE9BA39-3113-49A7-92DC-F5CECD3B2557}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CE9BA39-3113-49A7-92DC-F5CECD3B2557}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CE9BA39-3113-49A7-92DC-F5CECD3B2557}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CE9BA39-3113-49A7-92DC-F5CECD3B2557}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EEC249C-8C35-4EEB-A93B-D40AFF13937B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EEC249C-8C35-4EEB-A93B-D40AFF13937B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EEC249C-8C35-4EEB-A93B-D40AFF13937B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EEC249C-8C35-4EEB-A93B-D40AFF13937B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
