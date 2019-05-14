@@ -12,7 +12,9 @@ namespace SequentialPatternMining
         private int supportMin;
         private double minConfidence;
         private Dictionary<SortedSet<string>, int> frequent;
+        private AssociationRuleMatcher classifier;
         public Dictionary<SortedSet<string>, int> Frequent => frequent;
+        public AssociationRuleMatcher Classifier => classifier;
         public CancellationToken Token
         {
             get => token;
@@ -115,6 +117,7 @@ namespace SequentialPatternMining
                 }
             }
 
+            classifier = new AssociationRuleMatcher(itemsCount, rules.ToArray());
             return rules.ToArray();
         }
 

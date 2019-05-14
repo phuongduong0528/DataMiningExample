@@ -1,9 +1,11 @@
 ﻿using SequentialPatternMining;
+using SequentialPatternMining.GSP;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,11 +20,45 @@ namespace DataMining
         StreamReader fileReader;
         List<RetailData> retailDatas;
         SortedSet<string>[] dataset;
+        List<SortedSet<string>>[] datasetGsp;
+        AssociationRule[] assocRules;
+        Apriori apriori;
 
         public Form1()
         {
             InitializeComponent();
             retailDatas = new List<RetailData>();
+        }
+
+        private List<SortedSet<string>>[] GetFrequentTransactions(List<RetailData> input)
+        {
+            if (input.Count == 0)
+                return null;
+            List<List<SortedSet<string>>> result = new List<List<SortedSet<string>>>();
+            SortedSet<string> items = new SortedSet<string>();
+            List<SortedSet<string>> transac = new List<SortedSet<string>>();
+            IEnumerable<string> transactionIds = retailDatas.Select(rt => rt.InvoiceNo).Distinct();
+            IEnumerable<string> customerIds = retailDatas.Select(rd => rd.CustomerID).Distinct();
+            foreach(var c in customerIds)
+            {
+                transac = new List<SortedSet<string>>();
+                foreach (var t in transactionIds)
+                {
+                    var tmp = retailDatas.Where(rd => rd.InvoiceNo.Equals(t) && rd.CustomerID.Equals(c));
+                    if (tmp.Count() == 0)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        items = new SortedSet<string>(tmp.Select(x => x.StockCode));
+                        transac.Add(items);
+                    }
+                }
+                if(transac.Count != 0)
+                    result.Add(transac);
+            }
+            return result.ToArray();
         }
 
         private SortedSet<string>[] GetTransactions(List<RetailData> input)
@@ -41,7 +77,7 @@ namespace DataMining
 
         void PopuateData(List<RetailData> input)
         {
-            propertiesDgv.Rows.Add("InvoiceNo",retailDatas.Select(rd=>rd.InvoiceNo).Distinct().Count());
+            propertiesDgv.Rows.Add("InvoiceNo", retailDatas.Select(rd => rd.InvoiceNo).Distinct().Count());
             propertiesDgv.Rows.Add("StockCode", retailDatas.Select(rd => rd.StockCode).Distinct().Count());
             propertiesDgv.Rows.Add("Description", retailDatas.Select(rd => rd.Description).Distinct().Count());
             propertiesDgv.Rows.Add("Quantity", retailDatas.Select(rd => rd.Quantity).Distinct().Count());
@@ -53,6 +89,9 @@ namespace DataMining
 
         private void OpenFileBtn_Click(object sender, EventArgs e)
         {
+            toolStripProgressBar1.Visible = true;
+            toolStripStatusLabel1.Visible = true;
+            toolStripProgressBar1.Maximum = 9000;
             try
             {
                 if (openFileDialog1.ShowDialog() == DialogResult.OK)
@@ -61,16 +100,21 @@ namespace DataMining
                     fileDirectoryTxtB.Text = openFileDialog1.FileName;
                     CsvHelper.CsvReader reader = new CsvHelper.CsvReader(fileReader);
                     int count = 0;
-                    while (reader.Read() && count <= 6000)
+                    while (reader.Read() && count <= 9000)
                     {
+                        toolStripProgressBar1.PerformStep();
                         count++;
                         retailDatas.Add(reader.GetRecord<RetailData>());
                     }
-                    tabControl1.Visible = true;
-                    tabControl1.Enabled = true;
                 }
                 PopuateData(retailDatas);
-                dataset =  GetTransactions(retailDatas);
+                dataset = GetTransactions(retailDatas);
+                datasetGsp = GetFrequentTransactions(retailDatas);
+                tabControl1.Visible = true;
+                tabControl1.Enabled = true;
+                toolStripProgressBar1.Visible = false;
+                toolStripStatusLabel1.Visible = false;
+                toolStripProgressBar1.Value = 0;
             }
             catch (Exception ex)
             {
@@ -100,12 +144,12 @@ namespace DataMining
                                 labels.Add(y);
                                 propDetailsDgv.Rows.Add(y, z);
                             }
-                            DrawGraph("InvoiceNo",counts, labels);
+                            DrawGraph("InvoiceNo", counts, labels);
                             break;
                         }
                     case 1:
                         {
-                            x = retailDatas.Select(rd => rd.StockCode).Distinct();  
+                            x = retailDatas.Select(rd => rd.StockCode).Distinct();
                             foreach (var y in x)
                             {
                                 z = retailDatas.Where(rd => rd.StockCode.Equals(y)).Count();
@@ -196,13 +240,13 @@ namespace DataMining
                         }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
         }
 
-        private void DrawGraph(string property,List<double> graphDatas, List<string> labels)
+        private void DrawGraph(string property, List<double> graphDatas, List<string> labels)
         {
             GraphPane graphPane = zedGraphControl1.GraphPane;
             graphPane.GraphObjList.Clear();
@@ -213,7 +257,7 @@ namespace DataMining
             graphPane.XAxis.Title.Text = "Hạng mục";
             graphPane.YAxis.Title.Text = "Số lượng";
             BarItem barItem = graphPane.AddBar(property, null, graphDatas.ToArray(), Color.LightBlue);
-            if(labels.Count <= 10)
+            if (labels.Count <= 10)
             {
                 graphPane.XAxis.Scale.TextLabels = labels.ToArray();
                 graphPane.XAxis.Type = AxisType.Text;
@@ -232,7 +276,7 @@ namespace DataMining
 
         private void PropDetailsDgv_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            
+
         }
 
         private void FindAllBtn_Click(object sender, EventArgs e)
@@ -241,7 +285,7 @@ namespace DataMining
             {
                 assocRuleDgv.Rows.Clear();
                 double percent = double.Parse(suppTxtb.Text);
-                if(percent < 6)
+                if (percent < 6)
                 {
                     MessageBox.Show("Value to low");
                     return;
@@ -249,15 +293,16 @@ namespace DataMining
                 var supp = ((double)((double)dataset.Count() / (double)100)) * percent;
                 int support = (int)Math.Round(supp);
                 double conf = double.Parse(confTxtb.Text);
-                Apriori apriori = new Apriori(support,conf);
-                AssociationRule[] assocRule = apriori.Learn(dataset);
+                apriori = new Apriori(support, conf);
+                assocRules = apriori.Learn(dataset);
 
-                foreach(var rule in assocRule)
+                foreach (var rule in assocRules)
                 {
-                    assocRuleDgv.Rows.Add(rule.GetAssocRule(), rule.Support, rule.Confidence);
+                    assocRuleDgv.Rows.Add(rule.GetAssocRule(), rule.Support, rule.Confidence.ToString("N"));
+                    assocRuleRtb.Text += rule.ToString() + "\n";
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
@@ -267,6 +312,57 @@ namespace DataMining
         {
             ItemsFinderForm form = new ItemsFinderForm(retailDatas);
             form.Show();
+        }
+
+        private void SearchBtn_Click(object sender, EventArgs e)
+        {
+            string[] inputStr = searchTxtb.Text.Split(',');
+            string[][] decision = null;
+            double[] scores = apriori.Classifier.Scores(inputStr, ref decision);
+            string tmp;
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Các mặt hàng được mua tiếp theo:\n");
+            if (scores.Count() != 0)
+            {
+                assocRuleRtb.Clear();
+                for (int i = 0; i < scores.Count(); i++)
+                {
+                    tmp = "";
+                    foreach (var j in decision[i])
+                    {
+                        tmp += $"{j}, ";
+                    }
+                    sb.Append($"{i + 1}. {tmp}  ->  {scores[i].ToString("P", CultureInfo.InvariantCulture)}\n");
+                }
+                //MessageBox.Show(sb.ToString());
+                assocRuleRtb.Text = sb.ToString();
+            }
+        }
+
+        private void FinAllGSPBtn_Click(object sender, EventArgs e)
+        {
+            frequentDgv.Rows.Clear();
+            try
+            {
+                double percent = double.Parse(suppGspTxtb.Text);
+                if (percent < 2)
+                {
+                    MessageBox.Show("Value to low");
+                    return;
+                }
+                double supp = ((double)((double)dataset.Count() / (double)100)) * percent;
+                int support = (int)Math.Round(supp);
+                GSP gSP = new GSP(support);
+                Sequence[] x = gSP.Learn(datasetGsp);
+                foreach(var seq in x)
+                {
+                    frequentDgv.Rows.Add(seq.GetSequence(), seq.Support);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }

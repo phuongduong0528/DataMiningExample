@@ -12,6 +12,16 @@ namespace SequentialPatternMining.GSP
         public List<SortedSet<string>> sequence;
         public double Support { get; set; }
 
+        public string GetSequence()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach(var a in sequence)
+            {
+                sb.Append(a.ToArray().ToString(OctaveArrayFormatProvider.InvariantCulture));
+            }
+            return sb.ToString();
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
