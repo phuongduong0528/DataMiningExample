@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace SequentialPatternMining
 {
@@ -9,6 +11,8 @@ namespace SequentialPatternMining
     {
         CancellationToken token = new CancellationToken();
 
+        private ToolStripProgressBar progressBar;
+        private List<List<int>> transactionIndex;
         private int supportMin;
         private double minConfidence;
         private Dictionary<SortedSet<string>, int> frequent;
@@ -26,6 +30,15 @@ namespace SequentialPatternMining
             supportMin = support;
             this.minConfidence = confidence;
             frequent = new Dictionary<SortedSet<string>, int>();
+            progressBar = null;
+        }
+
+        public Apriori(int support, double confidence, ToolStripProgressBar progressBar)
+        {
+            supportMin = support;
+            this.minConfidence = confidence;
+            frequent = new Dictionary<SortedSet<string>, int>();
+            this.progressBar = progressBar;
         }
 
         public AssociationRule[] Learn(string[][] dataset, double[] weights = null)
@@ -49,10 +62,12 @@ namespace SequentialPatternMining
 
             for (int i = 1; individualItemList.Count != 0; i++)
             {
+                InitProgressBar(transactionSet.Length, 1);
                 HashSet<SortedSet<string>> candidateSet = GenerateCandidate(individualItemList, i);
                 suppCountingSet.Clear();
                 foreach (SortedSet<string> transaction in transactionSet)
                 {
+                    UpdateProgressBar();
                     foreach (SortedSet<string> candidate in candidateSet)
                     {
                         if (candidate.IsSubsetOf(transaction))
@@ -65,6 +80,7 @@ namespace SequentialPatternMining
                         }
                     }
                 }
+                FinishProgressBar();
 
                 individualItemList.Clear();
                 foreach (KeyValuePair<SortedSet<string>, int> pair in suppCountingSet)
@@ -78,7 +94,6 @@ namespace SequentialPatternMining
             }
 
             List<AssociationRule> rules = new List<AssociationRule>();
-
             // Generate association rules from the most frequent itemsets
             foreach (SortedSet<string> item in frequent.Keys)
             {
@@ -116,9 +131,14 @@ namespace SequentialPatternMining
                     }
                 }
             }
-
             classifier = new AssociationRuleMatcher(itemsCount, rules.ToArray());
             return rules.ToArray();
+        }
+
+        public async Task<AssociationRule[]> LearnAsync(SortedSet<string>[] transactionSet, double[] weights = null)
+        {
+            AssociationRule[] a = await Task.Run(() => Learn(transactionSet, weights));
+            return a;
         }
 
         private int support(ISet<string> items, IList<SortedSet<string>> dataset)
@@ -162,8 +182,57 @@ namespace SequentialPatternMining
                         result.Add(temp);
                 }
             }
-
             return result;
         }
+
+        private void InitProgressBar(int max, int step)
+        {
+            try
+            {
+                if (progressBar != null)
+                {
+                    progressBar.Control.Invoke((Action)(() => { progressBar.Visible = true; }));
+                    progressBar.Control.Invoke((Action)(() => { progressBar.Maximum = max; }));
+                    progressBar.Control.Invoke((Action)(() => { progressBar.Step = 1; }));
+                    progressBar.Control.Invoke((Action)(() => { progressBar.Value = 0; }));
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        private void UpdateProgressBar()
+        {
+            try
+            {
+                if (progressBar != null)
+                {
+                    progressBar.Control.Invoke((Action)(() => { progressBar.PerformStep(); }));
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        private void FinishProgressBar()
+        {
+            try
+            {
+                if(progressBar != null)
+                {
+                    progressBar.Control.Invoke((Action)(() => { progressBar.Value = 0; }));
+                    //progressBar.Control.Invoke((Action)(() => { progressBar.Visible = false; }));
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
     }
 }

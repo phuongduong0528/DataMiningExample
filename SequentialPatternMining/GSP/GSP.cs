@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace SequentialPatternMining.GSP
 {
@@ -13,8 +14,9 @@ namespace SequentialPatternMining.GSP
         internal class FrequentItem
         {
             public List<SortedSet<string>> seq;
-            public int count;
+            public int seqSupport;
         }
+        private ToolStripProgressBar progressBar;
         private int supportMin;
         private List<FrequentItem> frequent;
         private List<List<SortedSet<string>>> tempIList;
@@ -22,7 +24,16 @@ namespace SequentialPatternMining.GSP
         {
             this.supportMin = support;
             frequent = new List<FrequentItem>();
+            progressBar = null;
         }
+
+        public GSP(int support, ToolStripProgressBar progressBar)
+        {
+            this.supportMin = support;
+            frequent = new List<FrequentItem>();
+            this.progressBar = progressBar;
+        }
+
 
         List<List<SortedSet<string>>> Init(List<SortedSet<string>>[] dataSet)
         {
@@ -59,6 +70,9 @@ namespace SequentialPatternMining.GSP
             int itemsCount = individualItemList.Count;
             for (int i = 1; individualItemList.Count != 0; i++)
             {
+
+                InitProgressBar(dataSet.Count(), 1);
+
                 List<List<SortedSet<string>>> candidateSet = GenerateCandidate(individualItemList, i);
                 scs.Clear();
                 foreach (List<SortedSet<string>> sequenceItem in dataSet)
@@ -70,33 +84,42 @@ namespace SequentialPatternMining.GSP
                             if (scs.Any(s => IfEqualLists(s.seq, candidate)))
                             {
                                 var tmp = scs.FirstOrDefault(s => IfEqualLists(s.seq, candidate));
-                                tmp.count += 1;
+                                tmp.seqSupport += 1;
                             }
                             else
                             {
                                 scs.Add(new FrequentItem()
                                 {
                                     seq = candidate,
-                                    count = 1
+                                    seqSupport = 1
                                 });
                             }
                         }
                     }
+
+
+                    UpdateProgressBar();
+
                 }
 
                 individualItemList.Clear();
                 foreach(FrequentItem item in scs)
                 {
-                    if(item.count >= supportMin)
+                    if(item.seqSupport >= supportMin)
                     {
                         individualItemList.Add(item.seq);
-                        frequent.Add(new FrequentItem()
+
+                        if (item.seq.Count >= 2)
                         {
-                            seq = item.seq,
-                            count=item.count
-                        });
+                            frequent.Add(new FrequentItem()
+                            {
+                                seq = item.seq,
+                                seqSupport = item.seqSupport
+                            });
+                        }
                     }
                 }
+                FinishProgressBar();
             }
 
             List<Sequence> sequence = new List<Sequence>();
@@ -108,13 +131,17 @@ namespace SequentialPatternMining.GSP
                     sequence.Add(new Sequence()
                     {
                         sequence = i.seq,
-                        Support = i.count
+                        Support = i.seqSupport
                     });
                 }
             }
             return sequence.OrderBy(x => Count(x.sequence)).ToArray();
         }
 
+        public async Task<Sequence[]> LearnAsync(List<SortedSet<string>>[] dataSet)
+        {
+            return await Task.Run(() => Learn(dataSet));
+        }
 
         private bool IsSubSequence(List<SortedSet<string>> l1, List<SortedSet<string>> l2)
         {
@@ -204,6 +231,8 @@ namespace SequentialPatternMining.GSP
 
         private List<List<SortedSet<string>>> GenerateCandidate(List<List<SortedSet<string>>> input, int k)
         {
+            InitProgressBar(input.Count, 1);
+
             List<SortedSet<string>> temp;
             List<List<SortedSet<string>>> re = new List<List<SortedSet<string>>>();
             foreach (List<SortedSet<string>> i in tempIList)
@@ -213,6 +242,9 @@ namespace SequentialPatternMining.GSP
             }
             foreach (List<SortedSet<string>> i in input)
             {
+
+                UpdateProgressBar();
+
                 foreach (List<SortedSet<string>> j in input)
                 {
                     temp = new List<SortedSet<string>>(i);
@@ -230,7 +262,59 @@ namespace SequentialPatternMining.GSP
                         re.Add(temp);
                 }
             }
+
+            FinishProgressBar();
+
             return re;
+        }
+
+        private void InitProgressBar(int max, int step)
+        {
+            try
+            {
+                if (progressBar != null)
+                {
+                    progressBar.Control.Invoke((Action)(() => { progressBar.Visible = true; }));
+                    progressBar.Control.Invoke((Action)(() => { progressBar.Maximum = max; }));
+                    progressBar.Control.Invoke((Action)(() => { progressBar.Step = 1; }));
+                    progressBar.Control.Invoke((Action)(() => { progressBar.Value = 0; }));
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        private void UpdateProgressBar()
+        {
+            try
+            {
+                if (progressBar != null)
+                {
+                    progressBar.Control.Invoke((Action)(() => { progressBar.PerformStep(); }));
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        private void FinishProgressBar()
+        {
+            try
+            {
+                if (progressBar != null)
+                {
+                    progressBar.Control.Invoke((Action)(() => { progressBar.Value = 0; }));
+                    //progressBar.Control.Invoke((Action)(() => { progressBar.Visible = false; }));
+                }
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 }

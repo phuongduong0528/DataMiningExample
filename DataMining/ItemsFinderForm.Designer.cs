@@ -29,16 +29,19 @@
         private void InitializeComponent()
         {
             this.listDgv = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.searchTxtb = new System.Windows.Forms.TextBox();
             this.searchBtn = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.listDgv)).BeginInit();
             this.SuspendLayout();
             // 
             // listDgv
             // 
+            this.listDgv.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listDgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.listDgv.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
@@ -47,6 +50,16 @@
             this.listDgv.Name = "listDgv";
             this.listDgv.Size = new System.Drawing.Size(407, 408);
             this.listDgv.TabIndex = 0;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "StockCode";
+            this.Column1.Name = "Column1";
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Description";
+            this.Column2.Name = "Column2";
             // 
             // searchTxtb
             // 
@@ -74,16 +87,6 @@
             this.button1.Text = "Làm mới";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click);
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "StockCode";
-            this.Column1.Name = "Column1";
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Description";
-            this.Column2.Name = "Column2";
             // 
             // ItemsFinderForm
             // 

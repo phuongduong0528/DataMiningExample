@@ -32,66 +32,104 @@ namespace DataMining
 
         private List<SortedSet<string>>[] GetFrequentTransactions(List<RetailData> input)
         {
+            //==================
+            int minimum = 2;
+            //==================
+
             if (input.Count == 0)
                 return null;
             List<List<SortedSet<string>>> result = new List<List<SortedSet<string>>>();
             SortedSet<string> items = new SortedSet<string>();
             List<SortedSet<string>> transac = new List<SortedSet<string>>();
-            IEnumerable<string> transactionIds = retailDatas.Select(rt => rt.InvoiceNo).Distinct();
-            IEnumerable<string> customerIds = retailDatas.Select(rd => rd.CustomerID).Distinct();
-            foreach(var c in customerIds)
+            IEnumerable<string> customerIdsTemp = retailDatas.Select(rd => rd.CustomerID).Distinct();
+            List<string> customers = new List<string>();
+
+            
+
+            var invoicePerCustomer = retailDatas.Select(rd => new { rd.CustomerID, rd.InvoiceNo }).Distinct().ToList();
+            foreach(var cid in customerIdsTemp)
             {
-                transac = new List<SortedSet<string>>();
-                foreach (var t in transactionIds)
+                var z = invoicePerCustomer.Where(x => x.CustomerID.Equals(cid)).Count();
+                if (z >= minimum)
                 {
-                    var tmp = retailDatas.Where(rd => rd.InvoiceNo.Equals(t) && rd.CustomerID.Equals(c));
-                    if (tmp.Count() == 0)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        items = new SortedSet<string>(tmp.Select(x => x.StockCode));
-                        transac.Add(items);
-                    }
+                    customers.Add(cid);
                 }
-                if(transac.Count != 0)
-                    result.Add(transac);
             }
+
+            customerIdsTemp = null;
+            Invoke((Action)(() => { toolStripProgressBar1.Maximum = customers.Count(); }));
+            Invoke((Action)(() => { toolStripProgressBar1.Value = 0; }));
+
+            foreach (var c in customers)
+            {
+                Invoke((Action)(() => { toolStripProgressBar1.PerformStep(); }));
+                transac = new List<SortedSet<string>>();
+                var z = invoicePerCustomer.Where(ipc => ipc.CustomerID.Equals(c)).Select(ipc1=>ipc1.InvoiceNo);
+                foreach(var ivn in z)
+                {
+                    var x = retailDatas.Where(rd => rd.InvoiceNo.Equals(ivn)).Select(rd1 => rd1.StockCode);
+                    transac.Add(new SortedSet<string>(x));
+                }
+                result.Add(transac);
+            }
+
+            Invoke((Action)(() => { toolStripProgressBar1.Value = 0; }));
+
             return result.ToArray();
+        }
+
+        private async Task<List<SortedSet<string>>[]> GetFrequentTransactionsAsync(List<RetailData> input)
+        {
+            return await Task.Run(() => GetFrequentTransactions(input));
         }
 
         private SortedSet<string>[] GetTransactions(List<RetailData> input)
         {
+            //====================
+            int minimum = 2;
+            //====================
+            IEnumerable<string> tmp;
             if (input.Count == 0)
                 return null;
             List<SortedSet<string>> result = new List<SortedSet<string>>();
             var transactionIds = retailDatas.Select(rt => rt.InvoiceNo).Distinct();
-            List<RetailData> tmp;
+            Invoke((Action)(() => { toolStripProgressBar1.Value = 0; }));
+            Invoke((Action)(() => { toolStripProgressBar1.Maximum = transactionIds.Count(); }));
             foreach (var item in transactionIds)
             {
-                result.Add(new SortedSet<string>(retailDatas.Where(rd => rd.InvoiceNo.Equals(item)).Select(i => i.StockCode)));
+                Invoke((Action)(() => { toolStripProgressBar1.PerformStep(); }));
+                tmp = retailDatas.Where(rd => rd.InvoiceNo.Equals(item)).Select(i => i.StockCode);
+                if(tmp.Count()>= minimum)
+                {
+                    result.Add(new SortedSet<string>(tmp));
+                }
             }
+            Invoke((Action)(() => { toolStripProgressBar1.Value = 0; }));
             return result.ToArray();
+        }
+
+        private async Task<SortedSet<string>[]> GetTransactionsAsync(List<RetailData> input)
+        {
+            return await Task.Run(() => GetTransactions(input));
         }
 
         void PopuateData(List<RetailData> input)
         {
-            propertiesDgv.Rows.Add("InvoiceNo", retailDatas.Select(rd => rd.InvoiceNo).Distinct().Count());
-            propertiesDgv.Rows.Add("StockCode", retailDatas.Select(rd => rd.StockCode).Distinct().Count());
-            propertiesDgv.Rows.Add("Description", retailDatas.Select(rd => rd.Description).Distinct().Count());
-            propertiesDgv.Rows.Add("Quantity", retailDatas.Select(rd => rd.Quantity).Distinct().Count());
-            propertiesDgv.Rows.Add("InvoiceDate", retailDatas.Select(rd => rd.InvoiceDate).Distinct().Count());
-            propertiesDgv.Rows.Add("UnitPrice", retailDatas.Select(rd => rd.UnitPrice).Distinct().Count());
-            propertiesDgv.Rows.Add("CustomerID", retailDatas.Select(rd => rd.CustomerID).Distinct().Count());
-            propertiesDgv.Rows.Add("Country", retailDatas.Select(rd => rd.Country).Distinct().Count());
+            propertiesDgv.Rows.Add("InvoiceNo", retailDatas.Select(rd => rd.InvoiceNo).Distinct().Count(),"hóa đơn");
+            propertiesDgv.Rows.Add("StockCode", retailDatas.Select(rd => rd.StockCode).Distinct().Count(),"mã hàng");
+            propertiesDgv.Rows.Add("Description", retailDatas.Select(rd => rd.Description).Distinct().Count(),"tên hàng");
+            propertiesDgv.Rows.Add("Quantity", retailDatas.Select(rd => rd.Quantity).Distinct().Count(), "");
+            propertiesDgv.Rows.Add("InvoiceDate", retailDatas.Select(rd => rd.InvoiceDate).Distinct().Count(), "lượt mua");
+            propertiesDgv.Rows.Add("UnitPrice", retailDatas.Select(rd => rd.UnitPrice).Distinct().Count(),"");
+            propertiesDgv.Rows.Add("CustomerID", retailDatas.Select(rd => rd.CustomerID).Distinct().Count(),"khách hàng");
+            propertiesDgv.Rows.Add("Country", retailDatas.Select(rd => rd.Country).Distinct().Count(), "quốc gia");
         }
 
-        private void OpenFileBtn_Click(object sender, EventArgs e)
+        private async void OpenFileBtn_Click(object sender, EventArgs e)
         {
+
             toolStripProgressBar1.Visible = true;
             toolStripStatusLabel1.Visible = true;
-            toolStripProgressBar1.Maximum = 9000;
             try
             {
                 if (openFileDialog1.ShowDialog() == DialogResult.OK)
@@ -100,26 +138,25 @@ namespace DataMining
                     fileDirectoryTxtB.Text = openFileDialog1.FileName;
                     CsvHelper.CsvReader reader = new CsvHelper.CsvReader(fileReader);
                     int count = 0;
-                    while (reader.Read() && count <= 9000)
+                    while (reader.Read() && count <= 100000)
                     {
-                        toolStripProgressBar1.PerformStep();
                         count++;
                         retailDatas.Add(reader.GetRecord<RetailData>());
                     }
                 }
                 PopuateData(retailDatas);
-                dataset = GetTransactions(retailDatas);
-                datasetGsp = GetFrequentTransactions(retailDatas);
                 tabControl1.Visible = true;
                 tabControl1.Enabled = true;
-                toolStripProgressBar1.Visible = false;
-                toolStripStatusLabel1.Visible = false;
-                toolStripProgressBar1.Value = 0;
+                dataset = await GetTransactionsAsync(retailDatas);
+                findAllBtn.Enabled = true;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+            toolStripProgressBar1.Visible = false;
+            toolStripStatusLabel1.Visible = false;
+            toolStripProgressBar1.Value = 0;
         }
 
         private void PropertiesDgv_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -127,6 +164,7 @@ namespace DataMining
             propDetailsDgv.Rows.Clear();
             IEnumerable<string> x;
             int z;
+            int stt = 1;
             List<double> counts = new List<double>();
             List<string> labels = new List<string>();
             try
@@ -136,104 +174,137 @@ namespace DataMining
                 {
                     case 0:
                         {
+                            propDetailsDgv.Columns[1].HeaderText = "Hóa đơn";
                             x = retailDatas.Select(rd => rd.InvoiceNo).Distinct();
                             foreach (var y in x)
                             {
                                 z = retailDatas.Where(rd => rd.InvoiceNo.Equals(y)).Count();
                                 counts.Add(z);
                                 labels.Add(y);
-                                propDetailsDgv.Rows.Add(y, z);
+                                propDetailsDgv.Rows.Add(stt++,y, z);
                             }
                             DrawGraph("InvoiceNo", counts, labels);
                             break;
                         }
                     case 1:
                         {
+                            propDetailsDgv.Columns[1].HeaderText = "Mã hàng";
+                            propDetailsDgv.Columns[2].HeaderText = "Số lượt mua";
                             x = retailDatas.Select(rd => rd.StockCode).Distinct();
+                            var x1 = retailDatas.Select(rd => new { rd.StockCode, rd.InvoiceNo }).Distinct();
                             foreach (var y in x)
                             {
                                 z = retailDatas.Where(rd => rd.StockCode.Equals(y)).Count();
                                 counts.Add(z);
                                 labels.Add(y);
-                                propDetailsDgv.Rows.Add(y, z);
+                                propDetailsDgv.Rows.Add(stt++, y, z);
                             }
                             DrawGraph("StockCode", counts, labels);
                             break;
                         }
                     case 2:
                         {
+                            propDetailsDgv.Columns[1].HeaderText = "Tên hàng";
+                            propDetailsDgv.Columns[2].HeaderText = "Số lượt mua";
                             x = retailDatas.Select(rd => rd.Description).Distinct();
+                            var x1 = retailDatas.Select(rd => new { rd.Description, rd.InvoiceNo }).Distinct().ToList();
                             foreach (var y in x)
                             {
-                                z = retailDatas.Where(rd => rd.Description.Equals(y)).Count();
+                                z = x1.Where(rd => rd.Description.Equals(y)).Count();
                                 counts.Add(z);
                                 labels.Add(y);
-                                propDetailsDgv.Rows.Add(y, z);
+                                propDetailsDgv.Rows.Add(stt++, y, z);
                             }
                             DrawGraph("Description", counts, labels);
                             break;
                         }
                     case 3:
                         {
+                            propDetailsDgv.Columns[1].HeaderText = "Hạng mục";
+                            propDetailsDgv.Columns[2].HeaderText = "Số lươngj";
                             x = retailDatas.Select(rd => rd.Quantity).Distinct();
                             foreach (var y in x)
                             {
                                 z = retailDatas.Where(rd => rd.Quantity.Equals(y)).Count();
                                 counts.Add(z);
                                 labels.Add(y);
-                                propDetailsDgv.Rows.Add(y, z);
+                                propDetailsDgv.Rows.Add(stt++, y, z);
                             }
                             DrawGraph("Quantity", counts, labels);
                             break;
                         }
                     case 4:
                         {
+                            propDetailsDgv.Columns[1].HeaderText = "Tháng";
+                            propDetailsDgv.Columns[2].HeaderText = "Số lượt mua";
                             x = retailDatas.Select(rd => rd.InvoiceDate).Distinct();
+                            var x1 = retailDatas.Select(rd => new { rd.InvoiceDate, rd.InvoiceNo }).Distinct();
+                            int m = 0;
                             foreach (var y in x)
                             {
-                                z = retailDatas.Where(rd => rd.InvoiceDate.Equals(y)).Count();
-                                counts.Add(z);
-                                labels.Add(y);
-                                propDetailsDgv.Rows.Add(y, z);
+                                DateTime tmp = new DateTime();
+                                var check = DateTime.TryParseExact(y, @"dd/MM/yyyy HH\:mm",
+                                    CultureInfo.InvariantCulture, DateTimeStyles.None, out tmp);
+                                if (check == false)
+                                    continue;
+                                if (m!=tmp.Month)
+                                {
+                                    z = x1.Where(rd =>
+                                    DateTime.ParseExact(rd.InvoiceDate, @"dd/MM/yyyy HH\:mm",
+                                        CultureInfo.InvariantCulture).Month == tmp.Month).Count();
+                                    m = tmp.Month;
+                                    counts.Add(z);
+                                    labels.Add(tmp.Month.ToString());
+                                    propDetailsDgv.Rows.Add(stt++, tmp.Month.ToString(), z);
+                                }
                             }
                             DrawGraph("InvoiceDate", counts, labels);
                             break;
                         }
                     case 5:
                         {
+                            propDetailsDgv.Columns[1].HeaderText = "Giá sản phẩm";
+                            propDetailsDgv.Columns[2].HeaderText = "Số sản phẩm";
                             x = retailDatas.Select(rd => rd.UnitPrice).Distinct();
+                            var x1 = retailDatas.Select(rd => new { rd.UnitPrice, rd.StockCode }).Distinct();
                             foreach (var y in x)
                             {
                                 z = retailDatas.Where(rd => rd.UnitPrice.Equals(y)).Count();
                                 counts.Add(z);
                                 labels.Add(y);
-                                propDetailsDgv.Rows.Add(y, z);
+                                propDetailsDgv.Rows.Add(stt++, y, z);
                             }
                             DrawGraph("UnitPrice", counts, labels);
                             break;
                         }
                     case 6:
                         {
+                            propDetailsDgv.Columns[1].HeaderText = "Khách hàng";
+                            propDetailsDgv.Columns[2].HeaderText = "Số lượt mua";
                             x = retailDatas.Select(rd => rd.CustomerID).Distinct();
+                            var x1 = retailDatas.Select(rd => new { rd.CustomerID, rd.InvoiceNo }).Distinct().ToList();
                             foreach (var y in x)
                             {
-                                z = retailDatas.Where(rd => rd.CustomerID.Equals(y)).Count();
+                                z = x1.Where(rd => rd.CustomerID.Equals(y)).Count();
                                 counts.Add(z);
                                 labels.Add(y);
-                                propDetailsDgv.Rows.Add(y, z);
+                                propDetailsDgv.Rows.Add(stt++, y, z);
                             }
                             DrawGraph("CustomerID", counts, labels);
                             break;
                         }
                     case 7:
                         {
+                            propDetailsDgv.Columns[1].HeaderText = "Quốc gia";
+                            propDetailsDgv.Columns[2].HeaderText = "Số lượt mua";
                             x = retailDatas.Select(rd => rd.Country).Distinct();
+                            var x1 = retailDatas.Select(rd => new { rd.Country, rd.InvoiceNo }).Distinct();
                             foreach (var y in x)
                             {
-                                z = retailDatas.Where(rd => rd.Country.Equals(y)).Count();
+                                z = x1.Where(rd => rd.Country.Equals(y)).Count();
                                 counts.Add(z);
                                 labels.Add(y);
-                                propDetailsDgv.Rows.Add(y, z);
+                                propDetailsDgv.Rows.Add(stt++, y, z);
                             }
                             DrawGraph("Country", counts, labels);
                             break;
@@ -279,13 +350,14 @@ namespace DataMining
 
         }
 
-        private void FindAllBtn_Click(object sender, EventArgs e)
+        private async void FindAllBtn_Click(object sender, EventArgs e)
         {
             try
             {
+                assocRuleRtb.Clear();
                 assocRuleDgv.Rows.Clear();
                 double percent = double.Parse(suppTxtb.Text);
-                if (percent < 6)
+                if (percent < 1)
                 {
                     MessageBox.Show("Value to low");
                     return;
@@ -293,14 +365,36 @@ namespace DataMining
                 var supp = ((double)((double)dataset.Count() / (double)100)) * percent;
                 int support = (int)Math.Round(supp);
                 double conf = double.Parse(confTxtb.Text);
-                apriori = new Apriori(support, conf);
-                assocRules = apriori.Learn(dataset);
+                apriori = new Apriori(support, conf, toolStripProgressBar1);
 
-                foreach (var rule in assocRules)
+                toolStripStatusLabel1.Text = "Đang xử lí";
+                toolStripStatusLabel1.Visible = true;
+
+                assocRules = await apriori.LearnAsync(dataset);
+
+                if (assocRules.Count() <= 500)
                 {
-                    assocRuleDgv.Rows.Add(rule.GetAssocRule(), rule.Support, rule.Confidence.ToString("N"));
-                    assocRuleRtb.Text += rule.ToString() + "\n";
+                    foreach (var rule in assocRules)
+                    {
+                        assocRuleDgv.Rows.Add(rule.GetAssocRule(), rule.Support, rule.Confidence.ToString("N"));
+                        assocRuleRtb.Text += rule.ToString() + "\n";
+                    }
                 }
+                else
+                {
+                    MessageBox.Show("Quá nhiều dữ liệu" + "\nKết quả sẽ được lưu vào file");
+                    CsvHelper.CsvWriter csvWriter = new CsvHelper.CsvWriter(new StreamWriter(".\\Output.csv"));
+                    foreach (var rule in assocRules)
+                    {
+                        csvWriter.WriteField(rule.GetAssocRule());
+                        csvWriter.WriteField(rule.Support);
+                        csvWriter.WriteField(rule.Confidence.ToString("N"));
+                        csvWriter.NextRecord();
+                    }
+                }
+
+                toolStripProgressBar1.Visible = false;
+                toolStripStatusLabel1.Visible = false;
             }
             catch (Exception ex)
             {
@@ -339,30 +433,52 @@ namespace DataMining
             }
         }
 
-        private void FinAllGSPBtn_Click(object sender, EventArgs e)
+        private async void FinAllGSPBtn_Click(object sender, EventArgs e)
         {
             frequentDgv.Rows.Clear();
             try
             {
                 double percent = double.Parse(suppGspTxtb.Text);
-                if (percent < 2)
+                if (percent < 1)
                 {
                     MessageBox.Show("Value to low");
                     return;
                 }
                 double supp = ((double)((double)dataset.Count() / (double)100)) * percent;
                 int support = (int)Math.Round(supp);
-                GSP gSP = new GSP(support);
-                Sequence[] x = gSP.Learn(datasetGsp);
-                foreach(var seq in x)
+                GSP gSP = new GSP(support, toolStripProgressBar1);
+                Sequence[] x = await gSP.LearnAsync(datasetGsp);
+                foreach (var seq in x)
                 {
                     frequentDgv.Rows.Add(seq.GetSequence(), seq.Support);
                 }
+                toolStripProgressBar1.Visible = false;
             }
             catch (Exception ex)
             {
 
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private async void AnalysistC_Btn_Click(object sender, EventArgs e)
+        {
+            toolStripProgressBar1.Visible = true;
+            toolStripStatusLabel1.Visible = true;
+            datasetGsp = await GetFrequentTransactionsAsync(retailDatas);
+            finAllGSPBtn.Enabled = true;
+            searchGspBtn.Enabled = true;
+            toolStripProgressBar1.Visible = false;
+            toolStripStatusLabel1.Visible = false;
+        }
+
+        private void AnalysistT_Btn_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -41,7 +41,7 @@ namespace DataMining
             listDgv.Rows.Clear();
             string searchString = searchTxtb.Text.Trim();
             IEnumerable<(string StockCode, string Description)> searchResults = 
-                stockData.Where(sd => sd.StockCode.Equals(searchString));
+                stockData.Where(sd => sd.StockCode.Contains(searchString));
             foreach((string StockCode, string Description) i in searchResults)
             {
                 listDgv.Rows.Add(i.StockCode, i.Description);
