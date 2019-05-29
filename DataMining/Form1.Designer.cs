@@ -46,6 +46,9 @@
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.zedGraphControl1 = new ZedGraph.ZedGraphControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.assocRuleDgv = new System.Windows.Forms.DataGridView();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -62,8 +65,10 @@
             this.suppTxtb = new System.Windows.Forms.TextBox();
             this.searchTxtb = new System.Windows.Forms.TextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.label7 = new System.Windows.Forms.Label();
-            this.analysistT_Btn = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.analysistC_Btn = new System.Windows.Forms.Button();
             this.searchGspBtn = new System.Windows.Forms.Button();
             this.finAllGSPBtn = new System.Windows.Forms.Button();
@@ -77,6 +82,16 @@
             this.suppGspTxtb = new System.Windows.Forms.TextBox();
             this.searchGspTxtb = new System.Windows.Forms.TextBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.zedGraphControl2 = new ZedGraph.ZedGraphControl();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
@@ -89,17 +104,25 @@
             ((System.ComponentModel.ISupportInitialize)(this.propDetailsDgv)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.propertiesDgv)).BeginInit();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.assocRuleDgv)).BeginInit();
             this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.frequentDgv)).BeginInit();
+            this.tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
+            this.splitContainer4.Panel1.SuspendLayout();
+            this.splitContainer4.Panel2.SuspendLayout();
+            this.splitContainer4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -114,13 +137,13 @@
             this.fileDirectoryTxtB.Enabled = false;
             this.fileDirectoryTxtB.Location = new System.Drawing.Point(40, 4);
             this.fileDirectoryTxtB.Name = "fileDirectoryTxtB";
-            this.fileDirectoryTxtB.Size = new System.Drawing.Size(719, 27);
+            this.fileDirectoryTxtB.Size = new System.Drawing.Size(734, 27);
             this.fileDirectoryTxtB.TabIndex = 0;
             // 
             // openFileBtn
             // 
             this.openFileBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.openFileBtn.Location = new System.Drawing.Point(765, 4);
+            this.openFileBtn.Location = new System.Drawing.Point(780, 4);
             this.openFileBtn.Name = "openFileBtn";
             this.openFileBtn.Size = new System.Drawing.Size(74, 27);
             this.openFileBtn.TabIndex = 1;
@@ -150,7 +173,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 37);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(827, 397);
+            this.tabControl1.Size = new System.Drawing.Size(842, 397);
             this.tabControl1.TabIndex = 3;
             this.tabControl1.Visible = false;
             // 
@@ -160,7 +183,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(819, 364);
+            this.tabPage1.Size = new System.Drawing.Size(834, 364);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Tổng quan";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -179,8 +202,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.zedGraphControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(813, 358);
-            this.splitContainer1.SplitterDistance = 385;
+            this.splitContainer1.Size = new System.Drawing.Size(828, 358);
+            this.splitContainer1.SplitterDistance = 392;
             this.splitContainer1.TabIndex = 0;
             // 
             // propDetailsDgv
@@ -195,7 +218,7 @@
             this.dataGridViewTextBoxColumn2});
             this.propDetailsDgv.Location = new System.Drawing.Point(3, 177);
             this.propDetailsDgv.Name = "propDetailsDgv";
-            this.propDetailsDgv.Size = new System.Drawing.Size(379, 178);
+            this.propDetailsDgv.Size = new System.Drawing.Size(386, 178);
             this.propDetailsDgv.TabIndex = 2;
             this.propDetailsDgv.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.PropDetailsDgv_CellContentClick);
             // 
@@ -225,7 +248,7 @@
             this.dataGridViewTextBoxColumn3});
             this.propertiesDgv.Location = new System.Drawing.Point(3, 3);
             this.propertiesDgv.Name = "propertiesDgv";
-            this.propertiesDgv.Size = new System.Drawing.Size(379, 168);
+            this.propertiesDgv.Size = new System.Drawing.Size(386, 168);
             this.propertiesDgv.TabIndex = 2;
             this.propertiesDgv.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.PropertiesDgv_CellContentClick);
             // 
@@ -259,12 +282,15 @@
             this.zedGraphControl1.ScrollMinX = 0D;
             this.zedGraphControl1.ScrollMinY = 0D;
             this.zedGraphControl1.ScrollMinY2 = 0D;
-            this.zedGraphControl1.Size = new System.Drawing.Size(416, 348);
+            this.zedGraphControl1.Size = new System.Drawing.Size(424, 348);
             this.zedGraphControl1.TabIndex = 0;
             this.zedGraphControl1.UseExtendedPrintDialog = true;
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.numericUpDown1);
+            this.tabPage2.Controls.Add(this.button1);
+            this.tabPage2.Controls.Add(this.label9);
             this.tabPage2.Controls.Add(this.splitContainer2);
             this.tabPage2.Controls.Add(this.openFinderBtn);
             this.tabPage2.Controls.Add(this.label3);
@@ -278,10 +304,46 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(819, 364);
+            this.tabPage2.Size = new System.Drawing.Size(834, 364);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Qui luật mua hàng";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(139, 31);
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(46, 27);
+            this.numericUpDown1.TabIndex = 8;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(6, 23);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(127, 41);
+            this.button1.TabIndex = 7;
+            this.button1.Text = "Tiền xử lí dữ liệu";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.Button1_Click);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(451, 13);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(65, 20);
+            this.label9.TabIndex = 6;
+            this.label9.Text = "%  -  0/0";
             // 
             // splitContainer2
             // 
@@ -298,8 +360,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.assocRuleRtb);
-            this.splitContainer2.Size = new System.Drawing.Size(810, 280);
-            this.splitContainer2.SplitterDistance = 558;
+            this.splitContainer2.Size = new System.Drawing.Size(825, 280);
+            this.splitContainer2.SplitterDistance = 568;
             this.splitContainer2.TabIndex = 5;
             // 
             // assocRuleDgv
@@ -314,7 +376,7 @@
             this.Column5});
             this.assocRuleDgv.Location = new System.Drawing.Point(9, 7);
             this.assocRuleDgv.Name = "assocRuleDgv";
-            this.assocRuleDgv.Size = new System.Drawing.Size(546, 270);
+            this.assocRuleDgv.Size = new System.Drawing.Size(556, 270);
             this.assocRuleDgv.TabIndex = 1;
             // 
             // Column3
@@ -339,13 +401,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.assocRuleRtb.Location = new System.Drawing.Point(3, 7);
             this.assocRuleRtb.Name = "assocRuleRtb";
-            this.assocRuleRtb.Size = new System.Drawing.Size(242, 270);
+            this.assocRuleRtb.Size = new System.Drawing.Size(247, 270);
             this.assocRuleRtb.TabIndex = 0;
             this.assocRuleRtb.Text = "";
             // 
             // openFinderBtn
             // 
-            this.openFinderBtn.Location = new System.Drawing.Point(440, 13);
+            this.openFinderBtn.Location = new System.Drawing.Point(676, 40);
             this.openFinderBtn.Name = "openFinderBtn";
             this.openFinderBtn.Size = new System.Drawing.Size(149, 29);
             this.openFinderBtn.TabIndex = 4;
@@ -356,7 +418,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(227, 17);
+            this.label3.Location = new System.Drawing.Point(539, 13);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(76, 20);
             this.label3.TabIndex = 3;
@@ -365,7 +427,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(10, 48);
+            this.label4.Location = new System.Drawing.Point(238, 44);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(70, 20);
             this.label4.TabIndex = 3;
@@ -374,7 +436,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(11, 17);
+            this.label2.Location = new System.Drawing.Point(239, 13);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(92, 20);
             this.label2.TabIndex = 3;
@@ -383,7 +445,7 @@
             // findAllBtn
             // 
             this.findAllBtn.Enabled = false;
-            this.findAllBtn.Location = new System.Drawing.Point(316, 45);
+            this.findAllBtn.Location = new System.Drawing.Point(544, 41);
             this.findAllBtn.Name = "findAllBtn";
             this.findAllBtn.Size = new System.Drawing.Size(124, 27);
             this.findAllBtn.TabIndex = 2;
@@ -393,7 +455,7 @@
             // 
             // searchBtn
             // 
-            this.searchBtn.Location = new System.Drawing.Point(227, 45);
+            this.searchBtn.Location = new System.Drawing.Point(455, 41);
             this.searchBtn.Name = "searchBtn";
             this.searchBtn.Size = new System.Drawing.Size(83, 27);
             this.searchBtn.TabIndex = 2;
@@ -403,29 +465,32 @@
             // 
             // confTxtb
             // 
-            this.confTxtb.Location = new System.Drawing.Point(309, 14);
+            this.confTxtb.Location = new System.Drawing.Point(621, 10);
             this.confTxtb.Name = "confTxtb";
             this.confTxtb.Size = new System.Drawing.Size(118, 27);
             this.confTxtb.TabIndex = 1;
             // 
             // suppTxtb
             // 
-            this.suppTxtb.Location = new System.Drawing.Point(103, 14);
+            this.suppTxtb.Location = new System.Drawing.Point(331, 10);
             this.suppTxtb.Name = "suppTxtb";
             this.suppTxtb.Size = new System.Drawing.Size(118, 27);
             this.suppTxtb.TabIndex = 1;
+            this.suppTxtb.TextChanged += new System.EventHandler(this.SuppTxtb_TextChanged);
             // 
             // searchTxtb
             // 
-            this.searchTxtb.Location = new System.Drawing.Point(103, 45);
+            this.searchTxtb.Location = new System.Drawing.Point(331, 41);
             this.searchTxtb.Name = "searchTxtb";
             this.searchTxtb.Size = new System.Drawing.Size(118, 27);
             this.searchTxtb.TabIndex = 1;
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.label7);
-            this.tabPage3.Controls.Add(this.analysistT_Btn);
+            this.tabPage3.Controls.Add(this.button2);
+            this.tabPage3.Controls.Add(this.numericUpDown2);
+            this.tabPage3.Controls.Add(this.label10);
+            this.tabPage3.Controls.Add(this.label8);
             this.tabPage3.Controls.Add(this.analysistC_Btn);
             this.tabPage3.Controls.Add(this.searchGspBtn);
             this.tabPage3.Controls.Add(this.finAllGSPBtn);
@@ -436,44 +501,70 @@
             this.tabPage3.Controls.Add(this.searchGspTxtb);
             this.tabPage3.Location = new System.Drawing.Point(4, 29);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(819, 364);
+            this.tabPage3.Size = new System.Drawing.Size(834, 364);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Thói quen mua hàng";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // label7
+            // button2
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(46, 27);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(216, 20);
-            this.label7.TabIndex = 11;
-            this.label7.Text = "Thói quen mua chuỗi sản phẩm";
+            this.button2.Location = new System.Drawing.Point(609, 25);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(149, 29);
+            this.button2.TabIndex = 14;
+            this.button2.Text = "Tra cứu sản phẩm";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.OpenFinderBtn_Click);
             // 
-            // analysistT_Btn
+            // numericUpDown2
             // 
-            this.analysistT_Btn.Location = new System.Drawing.Point(268, 40);
-            this.analysistT_Btn.Name = "analysistT_Btn";
-            this.analysistT_Btn.Size = new System.Drawing.Size(151, 32);
-            this.analysistT_Btn.TabIndex = 10;
-            this.analysistT_Btn.Text = "Theo thời gian";
-            this.analysistT_Btn.UseVisualStyleBackColor = true;
-            this.analysistT_Btn.Click += new System.EventHandler(this.AnalysistT_Btn_Click);
+            this.numericUpDown2.Location = new System.Drawing.Point(139, 31);
+            this.numericUpDown2.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(48, 27);
+            this.numericUpDown2.TabIndex = 13;
+            this.numericUpDown2.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(384, 16);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(21, 20);
+            this.label10.TabIndex = 12;
+            this.label10.Text = "%";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(397, 16);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(49, 20);
+            this.label8.TabIndex = 12;
+            this.label8.Text = " -  0/0";
             // 
             // analysistC_Btn
             // 
-            this.analysistC_Btn.Location = new System.Drawing.Point(268, 6);
+            this.analysistC_Btn.Location = new System.Drawing.Point(6, 23);
             this.analysistC_Btn.Name = "analysistC_Btn";
-            this.analysistC_Btn.Size = new System.Drawing.Size(151, 32);
+            this.analysistC_Btn.Size = new System.Drawing.Size(127, 41);
             this.analysistC_Btn.TabIndex = 10;
-            this.analysistC_Btn.Text = "Theo khách hàng";
+            this.analysistC_Btn.Text = "Tiền xử lí dữ liệu";
             this.analysistC_Btn.UseVisualStyleBackColor = true;
             this.analysistC_Btn.Click += new System.EventHandler(this.AnalysistC_Btn_Click);
             // 
             // searchGspBtn
             // 
             this.searchGspBtn.Enabled = false;
-            this.searchGspBtn.Location = new System.Drawing.Point(691, 42);
+            this.searchGspBtn.Location = new System.Drawing.Point(491, 44);
             this.searchGspBtn.Name = "searchGspBtn";
             this.searchGspBtn.Size = new System.Drawing.Size(112, 27);
             this.searchGspBtn.TabIndex = 9;
@@ -483,7 +574,7 @@
             // finAllGSPBtn
             // 
             this.finAllGSPBtn.Enabled = false;
-            this.finAllGSPBtn.Location = new System.Drawing.Point(691, 11);
+            this.finAllGSPBtn.Location = new System.Drawing.Point(491, 13);
             this.finAllGSPBtn.Name = "finAllGSPBtn";
             this.finAllGSPBtn.Size = new System.Drawing.Size(112, 27);
             this.finAllGSPBtn.TabIndex = 9;
@@ -506,8 +597,8 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.richTextBox1);
-            this.splitContainer3.Size = new System.Drawing.Size(813, 285);
-            this.splitContainer3.SplitterDistance = 581;
+            this.splitContainer3.Size = new System.Drawing.Size(828, 285);
+            this.splitContainer3.SplitterDistance = 591;
             this.splitContainer3.TabIndex = 8;
             // 
             // frequentDgv
@@ -521,7 +612,7 @@
             this.Column7});
             this.frequentDgv.Location = new System.Drawing.Point(3, 3);
             this.frequentDgv.Name = "frequentDgv";
-            this.frequentDgv.Size = new System.Drawing.Size(575, 279);
+            this.frequentDgv.Size = new System.Drawing.Size(585, 279);
             this.frequentDgv.TabIndex = 0;
             // 
             // Column6
@@ -531,7 +622,7 @@
             // 
             // Column7
             // 
-            this.Column7.HeaderText = "Support";
+            this.Column7.HeaderText = "Độ phổ biến";
             this.Column7.Name = "Column7";
             // 
             // richTextBox1
@@ -541,14 +632,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextBox1.Location = new System.Drawing.Point(3, 3);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(222, 279);
+            this.richTextBox1.Size = new System.Drawing.Size(227, 279);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(424, 45);
+            this.label5.Location = new System.Drawing.Point(202, 48);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(70, 20);
             this.label5.TabIndex = 6;
@@ -557,34 +648,148 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(425, 14);
+            this.label6.Location = new System.Drawing.Point(202, 16);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(62, 20);
+            this.label6.Size = new System.Drawing.Size(92, 20);
             this.label6.TabIndex = 7;
-            this.label6.Text = "Support";
+            this.label6.Text = "Độ phổ biến";
             // 
             // suppGspTxtb
             // 
-            this.suppGspTxtb.Location = new System.Drawing.Point(500, 11);
+            this.suppGspTxtb.Location = new System.Drawing.Point(300, 13);
             this.suppGspTxtb.Name = "suppGspTxtb";
-            this.suppGspTxtb.Size = new System.Drawing.Size(185, 27);
+            this.suppGspTxtb.Size = new System.Drawing.Size(81, 27);
             this.suppGspTxtb.TabIndex = 4;
+            this.suppGspTxtb.TextChanged += new System.EventHandler(this.SuppGspTxtb_TextChanged);
             // 
             // searchGspTxtb
             // 
-            this.searchGspTxtb.Location = new System.Drawing.Point(500, 42);
+            this.searchGspTxtb.Location = new System.Drawing.Point(300, 44);
             this.searchGspTxtb.Name = "searchGspTxtb";
             this.searchGspTxtb.Size = new System.Drawing.Size(185, 27);
             this.searchGspTxtb.TabIndex = 5;
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.splitContainer4);
+            this.tabPage4.Controls.Add(this.comboBox3);
+            this.tabPage4.Controls.Add(this.comboBox2);
+            this.tabPage4.Controls.Add(this.comboBox1);
+            this.tabPage4.Controls.Add(this.label13);
+            this.tabPage4.Controls.Add(this.label12);
+            this.tabPage4.Controls.Add(this.label11);
+            this.tabPage4.Controls.Add(this.label7);
             this.tabPage4.Location = new System.Drawing.Point(4, 29);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(819, 364);
+            this.tabPage4.Size = new System.Drawing.Size(834, 364);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Thống kê";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer4
+            // 
+            this.splitContainer4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer4.Location = new System.Drawing.Point(3, 81);
+            this.splitContainer4.Name = "splitContainer4";
+            // 
+            // splitContainer4.Panel1
+            // 
+            this.splitContainer4.Panel1.Controls.Add(this.dataGridView1);
+            // 
+            // splitContainer4.Panel2
+            // 
+            this.splitContainer4.Panel2.Controls.Add(this.zedGraphControl2);
+            this.splitContainer4.Size = new System.Drawing.Size(828, 274);
+            this.splitContainer4.SplitterDistance = 400;
+            this.splitContainer4.TabIndex = 2;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 3);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(397, 268);
+            this.dataGridView1.TabIndex = 0;
+            // 
+            // zedGraphControl2
+            // 
+            this.zedGraphControl2.Location = new System.Drawing.Point(3, 3);
+            this.zedGraphControl2.Name = "zedGraphControl2";
+            this.zedGraphControl2.ScrollGrace = 0D;
+            this.zedGraphControl2.ScrollMaxX = 0D;
+            this.zedGraphControl2.ScrollMaxY = 0D;
+            this.zedGraphControl2.ScrollMaxY2 = 0D;
+            this.zedGraphControl2.ScrollMinX = 0D;
+            this.zedGraphControl2.ScrollMinY = 0D;
+            this.zedGraphControl2.ScrollMinY2 = 0D;
+            this.zedGraphControl2.Size = new System.Drawing.Size(418, 268);
+            this.zedGraphControl2.TabIndex = 0;
+            this.zedGraphControl2.UseExtendedPrintDialog = true;
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Location = new System.Drawing.Point(417, 47);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(121, 28);
+            this.comboBox3.TabIndex = 1;
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(417, 13);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(121, 28);
+            this.comboBox2.TabIndex = 1;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(111, 28);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 28);
+            this.comboBox1.TabIndex = 1;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(350, 50);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(66, 20);
+            this.label13.TabIndex = 0;
+            this.label13.Text = "Tới ngày";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(350, 16);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(62, 20);
+            this.label12.TabIndex = 0;
+            this.label12.Text = "Từ ngày";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(273, 31);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(71, 20);
+            this.label11.TabIndex = 0;
+            this.label11.Text = "Thời gian";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(19, 31);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(86, 20);
+            this.label7.TabIndex = 0;
+            this.label7.Text = "Khách hàng";
             // 
             // statusStrip1
             // 
@@ -593,7 +798,7 @@
             this.toolStripProgressBar1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 424);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(848, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(863, 22);
             this.statusStrip1.TabIndex = 4;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -615,7 +820,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(848, 446);
+            this.ClientSize = new System.Drawing.Size(863, 446);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.label1);
@@ -636,6 +841,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.propertiesDgv)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
@@ -643,11 +849,19 @@
             ((System.ComponentModel.ISupportInitialize)(this.assocRuleDgv)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.splitContainer3.Panel1.ResumeLayout(false);
             this.splitContainer3.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.frequentDgv)).EndInit();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
+            this.splitContainer4.Panel1.ResumeLayout(false);
+            this.splitContainer4.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
+            this.splitContainer4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -685,8 +899,6 @@
         private System.Windows.Forms.Button finAllGSPBtn;
         private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.DataGridView frequentDgv;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
@@ -698,8 +910,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Button analysistT_Btn;
         private System.Windows.Forms.Button analysistC_Btn;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
@@ -708,6 +918,25 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.SplitContainer splitContainer4;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private ZedGraph.ZedGraphControl zedGraphControl2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
     }
 }
 

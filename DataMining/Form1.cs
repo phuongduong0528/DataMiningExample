@@ -33,7 +33,7 @@ namespace DataMining
         private List<SortedSet<string>>[] GetFrequentTransactions(List<RetailData> input)
         {
             //==================
-            int minimum = 2;
+            int minimum = Convert.ToInt32(numericUpDown2.Value);
             //==================
 
             if (input.Count == 0)
@@ -72,6 +72,7 @@ namespace DataMining
                 }
                 result.Add(transac);
             }
+            Invoke((Action)(() => { label8.Text = $" -  0/{result.Count}"; }));
 
             Invoke((Action)(() => { toolStripProgressBar1.Value = 0; }));
 
@@ -86,8 +87,9 @@ namespace DataMining
         private SortedSet<string>[] GetTransactions(List<RetailData> input)
         {
             //====================
-            int minimum = 2;
+            int minimum = Convert.ToInt32(numericUpDown1.Value);
             //====================
+
             IEnumerable<string> tmp;
             if (input.Count == 0)
                 return null;
@@ -125,11 +127,8 @@ namespace DataMining
             propertiesDgv.Rows.Add("Country", retailDatas.Select(rd => rd.Country).Distinct().Count(), "quốc gia");
         }
 
-        private async void OpenFileBtn_Click(object sender, EventArgs e)
+        private void OpenFileBtn_Click(object sender, EventArgs e)
         {
-
-            toolStripProgressBar1.Visible = true;
-            toolStripStatusLabel1.Visible = true;
             try
             {
                 if (openFileDialog1.ShowDialog() == DialogResult.OK)
@@ -147,16 +146,11 @@ namespace DataMining
                 PopuateData(retailDatas);
                 tabControl1.Visible = true;
                 tabControl1.Enabled = true;
-                dataset = await GetTransactionsAsync(retailDatas);
-                findAllBtn.Enabled = true;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-            toolStripProgressBar1.Visible = false;
-            toolStripStatusLabel1.Visible = false;
-            toolStripProgressBar1.Value = 0;
         }
 
         private void PropertiesDgv_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -362,7 +356,7 @@ namespace DataMining
                     MessageBox.Show("Value to low");
                     return;
                 }
-                var supp = ((double)((double)dataset.Count() / (double)100)) * percent;
+                double supp = ((double)((double)dataset.Count() / (double)100)) * percent;
                 int support = (int)Math.Round(supp);
                 double conf = double.Parse(confTxtb.Text);
                 apriori = new Apriori(support, conf, toolStripProgressBar1);
@@ -444,14 +438,21 @@ namespace DataMining
                     MessageBox.Show("Value to low");
                     return;
                 }
-                double supp = ((double)((double)dataset.Count() / (double)100)) * percent;
+                double supp = ((double)((double)datasetGsp.Count() / (double)100)) * percent;
                 int support = (int)Math.Round(supp);
                 GSP gSP = new GSP(support, toolStripProgressBar1);
                 Sequence[] x = await gSP.LearnAsync(datasetGsp);
+
+                StringBuilder sb = new StringBuilder();
+
                 foreach (var seq in x)
                 {
                     frequentDgv.Rows.Add(seq.GetSequence(), seq.Support);
+                    sb.Append($"{seq.GetSequence()}  -  {seq.Support}/{datasetGsp.Count()} - " +
+                        $"{(seq.Support / datasetGsp.Count()).ToString("N")}\n");
                 }
+                richTextBox1.Clear();
+                richTextBox1.Text = sb.ToString();
                 toolStripProgressBar1.Visible = false;
             }
             catch (Exception ex)
@@ -479,6 +480,48 @@ namespace DataMining
         private void AnalysistT_Btn_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void SuppGspTxtb_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                double percent = double.Parse(suppGspTxtb.Text);
+                double supp = ((double)((double)datasetGsp.Count() / (double)100)) * percent;
+                int support = (int)Math.Round(supp);
+                label8.Text = $"  -  {support}/{datasetGsp.Count()}";
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        private async void Button1_Click(object sender, EventArgs e)
+        {
+            toolStripProgressBar1.Visible = true;
+            toolStripStatusLabel1.Visible = true;
+            dataset = await GetTransactionsAsync(retailDatas);
+            findAllBtn.Enabled = true;
+            toolStripProgressBar1.Visible = false;
+            toolStripStatusLabel1.Visible = false;
+            toolStripProgressBar1.Value = 0;
+            label9.Text = $"% - 0/{dataset.Count()}";
+        }
+
+        private void SuppTxtb_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                double percent = double.Parse(suppTxtb.Text);
+                double supp = ((double)((double)dataset.Count() / (double)100)) * percent;
+                int support = (int)Math.Round(supp);
+                label9.Text = $"% - {support}/{dataset.Count()}";
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 }

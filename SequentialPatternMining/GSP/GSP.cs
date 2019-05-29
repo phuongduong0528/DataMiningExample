@@ -19,11 +19,14 @@ namespace SequentialPatternMining.GSP
         private ToolStripProgressBar progressBar;
         private int supportMin;
         private List<FrequentItem> frequent;
+        //private List<List<SortedSet<string>>> tempSupportedSet;
+
         private List<List<SortedSet<string>>> tempIList;
         public GSP(int support)
         {
             this.supportMin = support;
             frequent = new List<FrequentItem>();
+            //tempSupportedSet = new List<List<SortedSet<string>>>();
             progressBar = null;
         }
 
@@ -31,6 +34,7 @@ namespace SequentialPatternMining.GSP
         {
             this.supportMin = support;
             frequent = new List<FrequentItem>();
+            //tempSupportedSet = new List<List<SortedSet<string>>>();
             this.progressBar = progressBar;
         }
 
@@ -54,7 +58,7 @@ namespace SequentialPatternMining.GSP
         {
             frequent.Clear();
             List<List<SortedSet<string>>> individualItemList = new List<List<SortedSet<string>>>();
-            List<FrequentItem> scs = new List<FrequentItem>();
+            List<FrequentItem> suppCountingSet = new List<FrequentItem>();
             individualItemList = Init(dataSet);
             foreach (var dsItem in dataSet)
             {
@@ -70,40 +74,39 @@ namespace SequentialPatternMining.GSP
             int itemsCount = individualItemList.Count;
             for (int i = 1; individualItemList.Count != 0; i++)
             {
-
-                InitProgressBar(dataSet.Count(), 1);
-
                 List<List<SortedSet<string>>> candidateSet = GenerateCandidate(individualItemList, i);
-                scs.Clear();
+                suppCountingSet.Clear();
+                //tempSupportedSet.Clear();
+                InitProgressBar(candidateSet.Count, 1);
                 foreach (List<SortedSet<string>> sequenceItem in dataSet)
                 {
+                    UpdateProgressBar();
                     foreach (List<SortedSet<string>> candidate in candidateSet)
                     {
                         if (IsSubSequence(candidate, sequenceItem))
                         {
-                            if (scs.Any(s => IfEqualLists(s.seq, candidate)))
+                            if (suppCountingSet.Any(s => IfEqualLists(s.seq, candidate)))
                             {
-                                var tmp = scs.FirstOrDefault(s => IfEqualLists(s.seq, candidate));
+                                var tmp = suppCountingSet.FirstOrDefault(s => IfEqualLists(s.seq, candidate));
                                 tmp.seqSupport += 1;
                             }
                             else
                             {
-                                scs.Add(new FrequentItem()
+                                suppCountingSet.Add(new FrequentItem()
                                 {
                                     seq = candidate,
                                     seqSupport = 1
                                 });
+                                //tempSupportedSet.Add(candidate);
                             }
                         }
                     }
-
-
-                    UpdateProgressBar();
-
                 }
 
+                FinishProgressBar();
+
                 individualItemList.Clear();
-                foreach(FrequentItem item in scs)
+                foreach(FrequentItem item in suppCountingSet)
                 {
                     if(item.seqSupport >= supportMin)
                     {
@@ -117,9 +120,19 @@ namespace SequentialPatternMining.GSP
                                 seqSupport = item.seqSupport
                             });
                         }
+                        else
+                        {
+                            if(item.seq[0].Count >= 2)
+                            {
+                                frequent.Add(new FrequentItem()
+                                {
+                                    seq = item.seq,
+                                    seqSupport = item.seqSupport
+                                });
+                            }
+                        }
                     }
                 }
-                FinishProgressBar();
             }
 
             List<Sequence> sequence = new List<Sequence>();
@@ -205,6 +218,24 @@ namespace SequentialPatternMining.GSP
             }
         }
 
+        //bool IsPruned(List<SortedSet<string>> input)
+        //{
+        //    if(input.Count > 1)
+        //    {
+        //        var temp = input;
+        //        for (int i = 0; i < input.Count; i++)
+        //        {
+        //            temp.RemoveAt(i);
+        //            if (tempSupportedSet.Any(x => IfEqualLists(x, temp)))
+        //            {
+        //                return true;
+        //            }
+        //        }
+        //        return false;
+        //    }
+        //    return false;
+        //}
+
         private int Count(List<SortedSet<string>> set)
         {
             int c = 0;
@@ -232,7 +263,6 @@ namespace SequentialPatternMining.GSP
         private List<List<SortedSet<string>>> GenerateCandidate(List<List<SortedSet<string>>> input, int k)
         {
             InitProgressBar(input.Count, 1);
-
             List<SortedSet<string>> temp;
             List<List<SortedSet<string>>> re = new List<List<SortedSet<string>>>();
             foreach (List<SortedSet<string>> i in tempIList)
