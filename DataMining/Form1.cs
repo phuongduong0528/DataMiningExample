@@ -44,10 +44,10 @@ namespace DataMining
             IEnumerable<string> customerIdsTemp = retailDatas.Select(rd => rd.CustomerID).Distinct();
             List<string> customers = new List<string>();
 
-            
+
 
             var invoicePerCustomer = retailDatas.Select(rd => new { rd.CustomerID, rd.InvoiceNo }).Distinct().ToList();
-            foreach(var cid in customerIdsTemp)
+            foreach (var cid in customerIdsTemp)
             {
                 var z = invoicePerCustomer.Where(x => x.CustomerID.Equals(cid)).Count();
                 if (z >= minimum)
@@ -64,8 +64,8 @@ namespace DataMining
             {
                 Invoke((Action)(() => { toolStripProgressBar1.PerformStep(); }));
                 transac = new List<SortedSet<string>>();
-                var z = invoicePerCustomer.Where(ipc => ipc.CustomerID.Equals(c)).Select(ipc1=>ipc1.InvoiceNo);
-                foreach(var ivn in z)
+                var z = invoicePerCustomer.Where(ipc => ipc.CustomerID.Equals(c)).Select(ipc1 => ipc1.InvoiceNo);
+                foreach (var ivn in z)
                 {
                     var x = retailDatas.Where(rd => rd.InvoiceNo.Equals(ivn)).Select(rd1 => rd1.StockCode);
                     transac.Add(new SortedSet<string>(x));
@@ -101,7 +101,7 @@ namespace DataMining
             {
                 Invoke((Action)(() => { toolStripProgressBar1.PerformStep(); }));
                 tmp = retailDatas.Where(rd => rd.InvoiceNo.Equals(item)).Select(i => i.StockCode);
-                if(tmp.Count()>= minimum)
+                if (tmp.Count() >= minimum)
                 {
                     result.Add(new SortedSet<string>(tmp));
                 }
@@ -117,13 +117,13 @@ namespace DataMining
 
         void PopuateData(List<RetailData> input)
         {
-            propertiesDgv.Rows.Add("InvoiceNo", retailDatas.Select(rd => rd.InvoiceNo).Distinct().Count(),"hóa đơn");
-            propertiesDgv.Rows.Add("StockCode", retailDatas.Select(rd => rd.StockCode).Distinct().Count(),"mã hàng");
-            propertiesDgv.Rows.Add("Description", retailDatas.Select(rd => rd.Description).Distinct().Count(),"tên hàng");
+            propertiesDgv.Rows.Add("InvoiceNo", retailDatas.Select(rd => rd.InvoiceNo).Distinct().Count(), "hóa đơn");
+            propertiesDgv.Rows.Add("StockCode", retailDatas.Select(rd => rd.StockCode).Distinct().Count(), "mã hàng");
+            propertiesDgv.Rows.Add("Description", retailDatas.Select(rd => rd.Description).Distinct().Count(), "tên hàng");
             propertiesDgv.Rows.Add("Quantity", retailDatas.Select(rd => rd.Quantity).Distinct().Count(), "");
             propertiesDgv.Rows.Add("InvoiceDate", retailDatas.Select(rd => rd.InvoiceDate).Distinct().Count(), "lượt mua");
-            propertiesDgv.Rows.Add("UnitPrice", retailDatas.Select(rd => rd.UnitPrice).Distinct().Count(),"");
-            propertiesDgv.Rows.Add("CustomerID", retailDatas.Select(rd => rd.CustomerID).Distinct().Count(),"khách hàng");
+            propertiesDgv.Rows.Add("UnitPrice", retailDatas.Select(rd => rd.UnitPrice).Distinct().Count(), "");
+            propertiesDgv.Rows.Add("CustomerID", retailDatas.Select(rd => rd.CustomerID).Distinct().Count(), "khách hàng");
             propertiesDgv.Rows.Add("Country", retailDatas.Select(rd => rd.Country).Distinct().Count(), "quốc gia");
         }
 
@@ -137,7 +137,7 @@ namespace DataMining
                     fileDirectoryTxtB.Text = openFileDialog1.FileName;
                     CsvHelper.CsvReader reader = new CsvHelper.CsvReader(fileReader);
                     int count = 0;
-                    while (reader.Read() && count <= 100000)
+                    while (reader.Read() && count <= 500000)
                     {
                         count++;
                         retailDatas.Add(reader.GetRecord<RetailData>());
@@ -175,7 +175,7 @@ namespace DataMining
                                 z = retailDatas.Where(rd => rd.InvoiceNo.Equals(y)).Count();
                                 counts.Add(z);
                                 labels.Add(y);
-                                propDetailsDgv.Rows.Add(stt++,y, z);
+                                propDetailsDgv.Rows.Add(stt++, y, z);
                             }
                             DrawGraph("InvoiceNo", counts, labels);
                             break;
@@ -241,7 +241,7 @@ namespace DataMining
                                     CultureInfo.InvariantCulture, DateTimeStyles.None, out tmp);
                                 if (check == false)
                                     continue;
-                                if (m!=tmp.Month)
+                                if (m != tmp.Month)
                                 {
                                     z = x1.Where(rd =>
                                     DateTime.ParseExact(rd.InvoiceDate, @"dd/MM/yyyy HH\:mm",
@@ -336,7 +336,6 @@ namespace DataMining
             }
             zedGraphControl1.AxisChange();
             zedGraphControl1.Refresh();
-
         }
 
         private void PropDetailsDgv_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -463,7 +462,7 @@ namespace DataMining
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            comboBox1.SelectedIndex = 0;
         }
 
         private async void AnalysistC_Btn_Click(object sender, EventArgs e)
@@ -522,6 +521,80 @@ namespace DataMining
             {
 
             }
+        }
+
+        private void RefreshBtn_Click(object sender, EventArgs e)
+        {
+            DateTime tempDT = new DateTime();
+            List<double> graphDatas = new List<double>();
+            List<string> graphLabels = new List<string>();
+            List<RetailData> correctedSet = new List<RetailData>();
+            foreach(var rd in retailDatas)
+            {
+                if(DateTime.TryParseExact(rd.InvoiceDate, @"dd/MM/yyyy HH\:mm",
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out tempDT))
+                {
+                    correctedSet.Add(rd);
+                }
+            }
+            List<RetailData> filteredSet = new List<RetailData>();
+            foreach(var rd in correctedSet)
+            {
+                if(DateTime.ParseExact(rd.InvoiceDate, @"dd/MM/yyyy HH\:mm", CultureInfo.InvariantCulture).Date >= fromDtp.Value.Date &&
+                   DateTime.ParseExact(rd.InvoiceDate, @"dd/MM/yyyy HH\:mm", CultureInfo.InvariantCulture).Date <= toDtp.Value.Date)
+                {
+                    filteredSet.Add(rd);
+                }
+            }
+
+            dataGridView1.Rows.Clear();
+            dataGridView1.Columns.Clear();
+            dataGridView1.Columns.Add("cl1", "Khách hàng");
+            dataGridView1.Columns.Add("cl2", "Số lượt mua");
+            dataGridView1.Columns.Add("cl3", "Chi tiêu");
+
+            var customerList = filteredSet.Select(x => x.CustomerID).Distinct();
+            var buyingCount = filteredSet.Select(x => new { x.CustomerID, x.InvoiceNo }).Distinct();
+            foreach(var customer in customerList)
+            {
+                var cbuyingCount = buyingCount.Where(x => x.CustomerID.Equals(customer)).Count();
+                var totalSpend = filteredSet.Where(x => x.CustomerID.Equals(customer))
+                    .Select(y => new { Total = Double.Parse(y.UnitPrice) * Double.Parse(y.Quantity) })
+                    .Sum(z=>z.Total);
+
+                dataGridView1.Rows.Add(customer, cbuyingCount, totalSpend);
+                graphDatas.Add(totalSpend);
+                graphLabels.Add(customer);
+            }
+
+            DrawGraph2("Chi tiêu khách hàng", graphDatas, graphLabels);
+        }
+
+        private void DrawGraph2(string property, List<double> graphDatas, List<string> labels)
+        {
+            GraphPane graphPane = zedGraphControl2.GraphPane;
+            graphPane.GraphObjList.Clear();
+            graphPane.CurveList.Clear();
+            zedGraphControl2.AxisChange();
+            zedGraphControl2.Refresh();
+
+            graphPane.XAxis.Title.Text = "Hạng mục";
+            graphPane.YAxis.Title.Text = "Số lượng";
+            BarItem barItem = graphPane.AddBar(property, null, graphDatas.ToArray(), Color.LightBlue);
+            //if (labels.Count <= 10)
+            //{
+                graphPane.XAxis.Scale.TextLabels = labels.ToArray();
+                graphPane.XAxis.Type = AxisType.Text;
+                graphPane.XAxis.MajorTic.IsBetweenLabels = true;
+            //}
+            //else
+            //{
+            //    graphPane.XAxis.Scale.TextLabels = null;
+            //    graphPane.XAxis.Type = AxisType.Linear;
+            //    graphPane.XAxis.MajorTic.IsBetweenLabels = false;
+            //}
+            zedGraphControl2.AxisChange();
+            zedGraphControl2.Refresh();
         }
     }
 }

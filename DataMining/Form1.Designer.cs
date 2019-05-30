@@ -82,11 +82,12 @@
             this.suppGspTxtb = new System.Windows.Forms.TextBox();
             this.searchGspTxtb = new System.Windows.Forms.TextBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.refreshBtn = new System.Windows.Forms.Button();
+            this.toDtp = new System.Windows.Forms.DateTimePicker();
+            this.fromDtp = new System.Windows.Forms.DateTimePicker();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.zedGraphControl2 = new ZedGraph.ZedGraphControl();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
@@ -671,9 +672,10 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.refreshBtn);
+            this.tabPage4.Controls.Add(this.toDtp);
+            this.tabPage4.Controls.Add(this.fromDtp);
             this.tabPage4.Controls.Add(this.splitContainer4);
-            this.tabPage4.Controls.Add(this.comboBox3);
-            this.tabPage4.Controls.Add(this.comboBox2);
             this.tabPage4.Controls.Add(this.comboBox1);
             this.tabPage4.Controls.Add(this.label13);
             this.tabPage4.Controls.Add(this.label12);
@@ -685,6 +687,36 @@
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Thống kê";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // refreshBtn
+            // 
+            this.refreshBtn.Location = new System.Drawing.Point(625, 23);
+            this.refreshBtn.Name = "refreshBtn";
+            this.refreshBtn.Size = new System.Drawing.Size(107, 33);
+            this.refreshBtn.TabIndex = 4;
+            this.refreshBtn.Text = "Làm mới";
+            this.refreshBtn.UseVisualStyleBackColor = true;
+            this.refreshBtn.Click += new System.EventHandler(this.RefreshBtn_Click);
+            // 
+            // toDtp
+            // 
+            this.toDtp.CustomFormat = "dd/MM/yyyy";
+            this.toDtp.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.toDtp.Location = new System.Drawing.Point(419, 50);
+            this.toDtp.Name = "toDtp";
+            this.toDtp.Size = new System.Drawing.Size(200, 27);
+            this.toDtp.TabIndex = 3;
+            this.toDtp.Value = new System.DateTime(2011, 1, 1, 0, 0, 0, 0);
+            // 
+            // fromDtp
+            // 
+            this.fromDtp.CustomFormat = "dd/MM/yyyy";
+            this.fromDtp.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.fromDtp.Location = new System.Drawing.Point(419, 15);
+            this.fromDtp.Name = "fromDtp";
+            this.fromDtp.Size = new System.Drawing.Size(200, 27);
+            this.fromDtp.TabIndex = 3;
+            this.fromDtp.Value = new System.DateTime(2011, 1, 1, 0, 0, 0, 0);
             // 
             // splitContainer4
             // 
@@ -731,25 +763,12 @@
             this.zedGraphControl2.TabIndex = 0;
             this.zedGraphControl2.UseExtendedPrintDialog = true;
             // 
-            // comboBox3
-            // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(417, 47);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(121, 28);
-            this.comboBox3.TabIndex = 1;
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(417, 13);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 28);
-            this.comboBox2.TabIndex = 1;
-            // 
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Khách hàng",
+            "Doanh số"});
             this.comboBox1.Location = new System.Drawing.Point(111, 28);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 28);
@@ -787,9 +806,9 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(19, 31);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(86, 20);
+            this.label7.Size = new System.Drawing.Size(70, 20);
             this.label7.TabIndex = 0;
-            this.label7.Text = "Khách hàng";
+            this.label7.Text = "Thống kê";
             // 
             // statusStrip1
             // 
@@ -927,8 +946,6 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
@@ -937,6 +954,9 @@
         private ZedGraph.ZedGraphControl zedGraphControl2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
+        private System.Windows.Forms.Button refreshBtn;
+        private System.Windows.Forms.DateTimePicker toDtp;
+        private System.Windows.Forms.DateTimePicker fromDtp;
     }
 }
 
