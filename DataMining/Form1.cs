@@ -153,7 +153,7 @@ namespace DataMining
             }
         }
 
-        private void PropertiesDgv_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private async void PropertiesDgv_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             propDetailsDgv.Rows.Clear();
             IEnumerable<string> x;
@@ -175,7 +175,12 @@ namespace DataMining
                                 z = retailDatas.Where(rd => rd.InvoiceNo.Equals(y)).Count();
                                 counts.Add(z);
                                 labels.Add(y);
-                                propDetailsDgv.Rows.Add(stt++, y, z);
+
+                                await Task.Run(() =>
+                                {
+                                    Invoke((Action)(() => { propDetailsDgv.Rows.Add(stt++, y, z); }));
+                                });
+                                //propDetailsDgv.Rows.Add(stt++, y, z);
                             }
                             DrawGraph("InvoiceNo", counts, labels);
                             break;
@@ -191,7 +196,12 @@ namespace DataMining
                                 z = retailDatas.Where(rd => rd.StockCode.Equals(y)).Count();
                                 counts.Add(z);
                                 labels.Add(y);
-                                propDetailsDgv.Rows.Add(stt++, y, z);
+
+                                await Task.Run(() =>
+                                {
+                                    Invoke((Action)(() => { propDetailsDgv.Rows.Add(stt++, y, z); }));
+                                });
+                                //propDetailsDgv.Rows.Add(stt++, y, z);
                             }
                             DrawGraph("StockCode", counts, labels);
                             break;
@@ -207,7 +217,12 @@ namespace DataMining
                                 z = x1.Where(rd => rd.Description.Equals(y)).Count();
                                 counts.Add(z);
                                 labels.Add(y);
-                                propDetailsDgv.Rows.Add(stt++, y, z);
+
+                                await Task.Run(() =>
+                                {
+                                    Invoke((Action)(() => { propDetailsDgv.Rows.Add(stt++, y, z); }));
+                                });
+                                //propDetailsDgv.Rows.Add(stt++, y, z);
                             }
                             DrawGraph("Description", counts, labels);
                             break;
@@ -448,7 +463,7 @@ namespace DataMining
                 {
                     frequentDgv.Rows.Add(seq.GetSequence(), seq.Support);
                     sb.Append($"{seq.GetSequence()}  -  {seq.Support}/{datasetGsp.Count()} - " +
-                        $"{(seq.Support / datasetGsp.Count()).ToString("N")}\n");
+                        $"{(seq.Support / datasetGsp.Count()).ToString("P1")}\n");
                 }
                 richTextBox1.Clear();
                 richTextBox1.Text = sb.ToString();
@@ -525,27 +540,96 @@ namespace DataMining
 
         private void RefreshBtn_Click(object sender, EventArgs e)
         {
+            if (comboBox1.SelectedIndex == 0)
+            {
+                CustomerReport();
+            }
+            if (comboBox1.SelectedIndex == 1)
+            {
+                StoreReport();
+            }
+        }
+
+        private void StoreReport()
+        {
             DateTime tempDT = new DateTime();
-            List<double> graphDatas = new List<double>();
+            List<double> graphDatas1 = new List<double>();
+            List<double> graphDatas2 = new List<double>();
             List<string> graphLabels = new List<string>();
             List<RetailData> correctedSet = new List<RetailData>();
-            foreach(var rd in retailDatas)
+            foreach (var rd in retailDatas)
             {
-                if(DateTime.TryParseExact(rd.InvoiceDate, @"dd/MM/yyyy HH\:mm",
+                if (DateTime.TryParseExact(rd.InvoiceDate, @"dd/MM/yyyy HH\:mm",
                 CultureInfo.InvariantCulture, DateTimeStyles.None, out tempDT))
                 {
                     correctedSet.Add(rd);
                 }
             }
             List<RetailData> filteredSet = new List<RetailData>();
-            foreach(var rd in correctedSet)
+            foreach (var rd in correctedSet)
             {
-                if(DateTime.ParseExact(rd.InvoiceDate, @"dd/MM/yyyy HH\:mm", CultureInfo.InvariantCulture).Date >= fromDtp.Value.Date &&
+                if (DateTime.ParseExact(rd.InvoiceDate, @"dd/MM/yyyy HH\:mm", CultureInfo.InvariantCulture).Date >= fromDtp.Value.Date &&
                    DateTime.ParseExact(rd.InvoiceDate, @"dd/MM/yyyy HH\:mm", CultureInfo.InvariantCulture).Date <= toDtp.Value.Date)
                 {
                     filteredSet.Add(rd);
                 }
             }
+
+            correctedSet = new List<RetailData>();
+
+            dataGridView1.Rows.Clear();
+            dataGridView1.Columns.Clear();
+            dataGridView1.Columns.Add("cl1", "Ngày");
+            dataGridView1.Columns.Add("cl2", "Lượt mua");
+            dataGridView1.Columns.Add("cl3", "Lượng hàng bán");
+            var dateList = filteredSet.Select(x => new
+            {
+                Date = DateTime.ParseExact(x.InvoiceDate, @"dd/MM/yyyy HH\:mm",
+                            CultureInfo.InvariantCulture).Date
+            }).Distinct().ToList();
+
+            foreach (var date in dateList)
+            {
+                var count = filteredSet.Where(x => DateTime.ParseExact(x.InvoiceDate, @"dd/MM/yyyy HH\:mm",
+                            CultureInfo.InvariantCulture).Date.Equals(date.Date))
+                    .Select(y => y.InvoiceNo).Distinct().Count();
+
+                var price = filteredSet.Where(x => DateTime.ParseExact(x.InvoiceDate, @"dd/MM/yyyy HH\:mm",
+                            CultureInfo.InvariantCulture).Date.Equals(date.Date))
+                    .Select(y => new { Price = Double.Parse(y.UnitPrice) * Double.Parse(y.Quantity) }).Sum(z => z.Price);
+                graphDatas1.Add(price);
+                graphDatas2.Add(count);
+                graphLabels.Add(date.Date.ToString(@"dd/MM/yyyy"));
+                dataGridView1.Rows.Add(date.Date.ToString(@"dd/MM/yyyy"), count, price.ToString("F2"));
+            }
+            DrawLineGraph2("Lượng hàng bán", "Lượt mua", graphDatas1, graphDatas2, graphLabels);
+        }
+
+        private void CustomerReport()
+        {
+            DateTime tempDT = new DateTime();
+            List<double> graphDatas = new List<double>();
+            List<string> graphLabels = new List<string>();
+            List<RetailData> correctedSet = new List<RetailData>();
+            foreach (var rd in retailDatas)
+            {
+                if (DateTime.TryParseExact(rd.InvoiceDate, @"dd/MM/yyyy HH\:mm",
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out tempDT))
+                {
+                    correctedSet.Add(rd);
+                }
+            }
+            List<RetailData> filteredSet = new List<RetailData>();
+            foreach (var rd in correctedSet)
+            {
+                if (DateTime.ParseExact(rd.InvoiceDate, @"dd/MM/yyyy HH\:mm", CultureInfo.InvariantCulture).Date >= fromDtp.Value.Date &&
+                   DateTime.ParseExact(rd.InvoiceDate, @"dd/MM/yyyy HH\:mm", CultureInfo.InvariantCulture).Date <= toDtp.Value.Date)
+                {
+                    filteredSet.Add(rd);
+                }
+            }
+
+            correctedSet = new List<RetailData>();
 
             dataGridView1.Rows.Clear();
             dataGridView1.Columns.Clear();
@@ -553,16 +637,16 @@ namespace DataMining
             dataGridView1.Columns.Add("cl2", "Số lượt mua");
             dataGridView1.Columns.Add("cl3", "Chi tiêu");
 
-            var customerList = filteredSet.Select(x => x.CustomerID).Distinct();
-            var buyingCount = filteredSet.Select(x => new { x.CustomerID, x.InvoiceNo }).Distinct();
-            foreach(var customer in customerList)
+            var customerList = filteredSet.Select(x => x.CustomerID).Distinct().ToList();
+            var buyingCount = filteredSet.Select(x => new { x.CustomerID, x.InvoiceNo }).Distinct().ToList();
+            foreach (var customer in customerList)
             {
                 var cbuyingCount = buyingCount.Where(x => x.CustomerID.Equals(customer)).Count();
                 var totalSpend = filteredSet.Where(x => x.CustomerID.Equals(customer))
                     .Select(y => new { Total = Double.Parse(y.UnitPrice) * Double.Parse(y.Quantity) })
-                    .Sum(z=>z.Total);
+                    .Sum(z => z.Total);
 
-                dataGridView1.Rows.Add(customer, cbuyingCount, totalSpend);
+                dataGridView1.Rows.Add(customer, cbuyingCount, totalSpend.ToString("F2"));
                 graphDatas.Add(totalSpend);
                 graphLabels.Add(customer);
             }
@@ -583,9 +667,9 @@ namespace DataMining
             BarItem barItem = graphPane.AddBar(property, null, graphDatas.ToArray(), Color.LightBlue);
             //if (labels.Count <= 10)
             //{
-                graphPane.XAxis.Scale.TextLabels = labels.ToArray();
-                graphPane.XAxis.Type = AxisType.Text;
-                graphPane.XAxis.MajorTic.IsBetweenLabels = true;
+            graphPane.XAxis.Scale.TextLabels = labels.ToArray();
+            graphPane.XAxis.Type = AxisType.Text;
+            graphPane.XAxis.MajorTic.IsBetweenLabels = true;
             //}
             //else
             //{
@@ -593,6 +677,30 @@ namespace DataMining
             //    graphPane.XAxis.Type = AxisType.Linear;
             //    graphPane.XAxis.MajorTic.IsBetweenLabels = false;
             //}
+            zedGraphControl2.AxisChange();
+            zedGraphControl2.Refresh();
+        }
+
+        private void DrawLineGraph2(string property1, string property2, List<double> graphDatas1, List<double> graphDatas2, List<string> labels)
+        {
+            GraphPane graphPane = zedGraphControl2.GraphPane;
+            graphPane.GraphObjList.Clear();
+            graphPane.CurveList.Clear();
+            zedGraphControl2.AxisChange();
+            zedGraphControl2.Refresh();
+
+            graphPane.XAxis.Title.Text = "Hạng mục";
+            graphPane.YAxis.Title.Text = "Số lượng";
+            graphPane.Y2Axis.Title.Text = "Số lượng";
+            CurveItem curveItem = graphPane.AddCurve(property1, null,
+                graphDatas1.ToArray(), Color.Red, SymbolType.Diamond);
+            BarItem barItem = graphPane.AddBar(property2, null, 
+                graphDatas2.ToArray(), Color.Cyan);
+            ((LineItem)(zedGraphControl2.GraphPane.CurveList[0])).Line.Width = 3.0f;
+            barItem.IsY2Axis = true;
+            graphPane.XAxis.Scale.TextLabels = labels.ToArray();
+            graphPane.XAxis.Type = AxisType.Text;
+            graphPane.XAxis.MajorTic.IsBetweenLabels = true;
             zedGraphControl2.AxisChange();
             zedGraphControl2.Refresh();
         }
