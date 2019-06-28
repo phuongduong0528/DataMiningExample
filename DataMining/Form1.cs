@@ -23,6 +23,7 @@ namespace DataMining
         List<SortedSet<string>>[] datasetGsp;
         AssociationRule[] assocRules;
         Apriori apriori;
+        Sequence[] sequ;
 
         public Form1()
         {
@@ -334,6 +335,7 @@ namespace DataMining
             zedGraphControl1.AxisChange();
             zedGraphControl1.Refresh();
 
+            graphPane.Title.Text = property;
             graphPane.XAxis.Title.Text = "Hạng mục";
             graphPane.YAxis.Title.Text = "Số lượng";
             BarItem barItem = graphPane.AddBar(property, null, graphDatas.ToArray(), Color.LightBlue);
@@ -384,8 +386,12 @@ namespace DataMining
                 {
                     foreach (var rule in assocRules)
                     {
-                        assocRuleDgv.Rows.Add(rule.GetAssocRule(), rule.Support, rule.Confidence.ToString("N"));
-                        assocRuleRtb.Text += rule.ToString() + "\n";
+                        if (rule.Y.Count > 0)
+                        {
+                            assocRuleDgv.Rows.Add(rule.GetAssocRule(), (rule.Support / dataset.Count()).ToString("P1"),
+                            rule.Confidence.ToString("N"));
+                            assocRuleRtb.Text += rule.ToString() + "\n";
+                        }
                     }
                 }
                 else
@@ -456,12 +462,12 @@ namespace DataMining
                 int support = (int)Math.Round(supp);
                 GSP gSP = new GSP(support, toolStripProgressBar1);
                 Sequence[] x = await gSP.LearnAsync(datasetGsp);
-
+                sequ = x;
                 StringBuilder sb = new StringBuilder();
 
                 foreach (var seq in x)
                 {
-                    frequentDgv.Rows.Add(seq.GetSequence(), seq.Support);
+                    frequentDgv.Rows.Add(seq.GetSequence(), (seq.Support / datasetGsp.Count()).ToString("P1"));
                     sb.Append($"{seq.GetSequence()}  -  {seq.Support}/{datasetGsp.Count()} - " +
                         $"{(seq.Support / datasetGsp.Count()).ToString("P1")}\n");
                 }
@@ -553,8 +559,11 @@ namespace DataMining
         private void StoreReport()
         {
             DateTime tempDT = new DateTime();
+            int sum1 = 0;
+            double sum2 = 0;
             List<double> graphDatas1 = new List<double>();
             List<double> graphDatas2 = new List<double>();
+            List<double> graphDatas3 = new List<double>();
             List<string> graphLabels = new List<string>();
             List<RetailData> correctedSet = new List<RetailData>();
             foreach (var rd in retailDatas)
@@ -597,12 +606,17 @@ namespace DataMining
                 var price = filteredSet.Where(x => DateTime.ParseExact(x.InvoiceDate, @"dd/MM/yyyy HH\:mm",
                             CultureInfo.InvariantCulture).Date.Equals(date.Date))
                     .Select(y => new { Price = Double.Parse(y.UnitPrice) * Double.Parse(y.Quantity) }).Sum(z => z.Price);
+                sum1+= count;
+                sum2+= price;
+                graphDatas3.Add(sum2);
                 graphDatas1.Add(price);
                 graphDatas2.Add(count);
                 graphLabels.Add(date.Date.ToString(@"dd/MM/yyyy"));
                 dataGridView1.Rows.Add(date.Date.ToString(@"dd/MM/yyyy"), count, price.ToString("F2"));
             }
-            DrawLineGraph2("Lượng hàng bán", "Lượt mua", graphDatas1, graphDatas2, graphLabels);
+            dataGridView1.Rows.Add("Tổng", sum1, sum2.ToString("F2"));
+
+            DrawLineGraph2("Lượng hàng bán", "Lượt mua", "Doanh số", graphDatas1, graphDatas2, graphDatas3, graphLabels);
         }
 
         private void CustomerReport()
@@ -681,7 +695,8 @@ namespace DataMining
             zedGraphControl2.Refresh();
         }
 
-        private void DrawLineGraph2(string property1, string property2, List<double> graphDatas1, List<double> graphDatas2, List<string> labels)
+        private void DrawLineGraph2(string property1, string property2, string property3,
+            List<double> graphDatas1, List<double> graphDatas2, List<double> graphDatas3, List<string> labels)
         {
             GraphPane graphPane = zedGraphControl2.GraphPane;
             graphPane.GraphObjList.Clear();
@@ -690,11 +705,14 @@ namespace DataMining
             zedGraphControl2.Refresh();
 
             graphPane.XAxis.Title.Text = "Hạng mục";
-            graphPane.YAxis.Title.Text = "Số lượng";
-            graphPane.Y2Axis.Title.Text = "Số lượng";
+            graphPane.YAxis.Title.Text = "";
+            graphPane.Y2Axis.Title.Text = "";
+            graphPane.Y2Axis.IsVisible = true;
             CurveItem curveItem = graphPane.AddCurve(property1, null,
                 graphDatas1.ToArray(), Color.Red, SymbolType.Diamond);
-            BarItem barItem = graphPane.AddBar(property2, null, 
+            CurveItem curveItem1 = graphPane.AddCurve(property3, null,
+                graphDatas3.ToArray(), Color.Blue, SymbolType.Circle);
+            BarItem barItem = graphPane.AddBar(property2, null,
                 graphDatas2.ToArray(), Color.Cyan);
             ((LineItem)(zedGraphControl2.GraphPane.CurveList[0])).Line.Width = 3.0f;
             barItem.IsY2Axis = true;
@@ -703,6 +721,23 @@ namespace DataMining
             graphPane.XAxis.MajorTic.IsBetweenLabels = true;
             zedGraphControl2.AxisChange();
             zedGraphControl2.Refresh();
+        }
+
+        private void SearchGspTxtb_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void SearchGspBtn_Click(object sender, EventArgs e)
+        {
+            richTextBox1.Clear();
+            string a = searchGspTxtb.Text;
+            List<Sequence> res = sequ.Where(s => s.sequence.Any(s2 => s2.Any(s3 => s3.Contains(a)))).ToList();
+            foreach (Sequence s in res)
+            {
+                richTextBox1.AppendText($"{s.GetSequence()} => Support: {(s.Support / datasetGsp.Count()).ToString("P1")}");
+            }
+
         }
     }
 }

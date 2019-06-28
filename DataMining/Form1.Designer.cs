@@ -130,6 +130,7 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.Filter = "CSV Files|*.csv";
             // 
             // fileDirectoryTxtB
             // 
@@ -138,13 +139,13 @@
             this.fileDirectoryTxtB.Enabled = false;
             this.fileDirectoryTxtB.Location = new System.Drawing.Point(40, 4);
             this.fileDirectoryTxtB.Name = "fileDirectoryTxtB";
-            this.fileDirectoryTxtB.Size = new System.Drawing.Size(734, 27);
+            this.fileDirectoryTxtB.Size = new System.Drawing.Size(743, 27);
             this.fileDirectoryTxtB.TabIndex = 0;
             // 
             // openFileBtn
             // 
             this.openFileBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.openFileBtn.Location = new System.Drawing.Point(780, 4);
+            this.openFileBtn.Location = new System.Drawing.Point(789, 4);
             this.openFileBtn.Name = "openFileBtn";
             this.openFileBtn.Size = new System.Drawing.Size(74, 27);
             this.openFileBtn.TabIndex = 1;
@@ -174,7 +175,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 37);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(842, 397);
+            this.tabControl1.Size = new System.Drawing.Size(851, 447);
             this.tabControl1.TabIndex = 3;
             this.tabControl1.Visible = false;
             // 
@@ -184,7 +185,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(834, 364);
+            this.tabPage1.Size = new System.Drawing.Size(843, 414);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Tổng quan";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -203,8 +204,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.zedGraphControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(828, 358);
-            this.splitContainer1.SplitterDistance = 392;
+            this.splitContainer1.Size = new System.Drawing.Size(837, 408);
+            this.splitContainer1.SplitterDistance = 396;
             this.splitContainer1.TabIndex = 0;
             // 
             // propDetailsDgv
@@ -217,9 +218,9 @@
             this.Column8,
             this.dataGridViewTextBoxColumn1,
             this.dataGridViewTextBoxColumn2});
-            this.propDetailsDgv.Location = new System.Drawing.Point(3, 177);
+            this.propDetailsDgv.Location = new System.Drawing.Point(3, 275);
             this.propDetailsDgv.Name = "propDetailsDgv";
-            this.propDetailsDgv.Size = new System.Drawing.Size(386, 178);
+            this.propDetailsDgv.Size = new System.Drawing.Size(390, 130);
             this.propDetailsDgv.TabIndex = 2;
             this.propDetailsDgv.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.PropDetailsDgv_CellContentClick);
             // 
@@ -249,7 +250,7 @@
             this.dataGridViewTextBoxColumn3});
             this.propertiesDgv.Location = new System.Drawing.Point(3, 3);
             this.propertiesDgv.Name = "propertiesDgv";
-            this.propertiesDgv.Size = new System.Drawing.Size(386, 168);
+            this.propertiesDgv.Size = new System.Drawing.Size(390, 266);
             this.propertiesDgv.TabIndex = 2;
             this.propertiesDgv.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.PropertiesDgv_CellContentClick);
             // 
@@ -283,7 +284,7 @@
             this.zedGraphControl1.ScrollMinX = 0D;
             this.zedGraphControl1.ScrollMinY = 0D;
             this.zedGraphControl1.ScrollMinY2 = 0D;
-            this.zedGraphControl1.Size = new System.Drawing.Size(424, 348);
+            this.zedGraphControl1.Size = new System.Drawing.Size(429, 398);
             this.zedGraphControl1.TabIndex = 0;
             this.zedGraphControl1.UseExtendedPrintDialog = true;
             // 
@@ -305,9 +306,9 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(834, 364);
+            this.tabPage2.Size = new System.Drawing.Size(843, 414);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Qui luật mua hàng";
+            this.tabPage2.Text = "Apriori";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // numericUpDown1
@@ -351,7 +352,7 @@
             this.splitContainer2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer2.Location = new System.Drawing.Point(6, 78);
+            this.splitContainer2.Location = new System.Drawing.Point(6, 75);
             this.splitContainer2.Name = "splitContainer2";
             // 
             // splitContainer2.Panel1
@@ -361,7 +362,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.assocRuleRtb);
-            this.splitContainer2.Size = new System.Drawing.Size(825, 280);
+            this.splitContainer2.Size = new System.Drawing.Size(825, 330);
             this.splitContainer2.SplitterDistance = 568;
             this.splitContainer2.TabIndex = 5;
             // 
@@ -377,7 +378,7 @@
             this.Column5});
             this.assocRuleDgv.Location = new System.Drawing.Point(9, 7);
             this.assocRuleDgv.Name = "assocRuleDgv";
-            this.assocRuleDgv.Size = new System.Drawing.Size(556, 270);
+            this.assocRuleDgv.Size = new System.Drawing.Size(556, 320);
             this.assocRuleDgv.TabIndex = 1;
             // 
             // Column3
@@ -402,7 +403,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.assocRuleRtb.Location = new System.Drawing.Point(3, 7);
             this.assocRuleRtb.Name = "assocRuleRtb";
-            this.assocRuleRtb.Size = new System.Drawing.Size(247, 270);
+            this.assocRuleRtb.Size = new System.Drawing.Size(247, 320);
             this.assocRuleRtb.TabIndex = 0;
             this.assocRuleRtb.Text = "";
             // 
@@ -419,7 +420,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(539, 13);
+            this.label3.Location = new System.Drawing.Point(625, 13);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(76, 20);
             this.label3.TabIndex = 3;
@@ -466,7 +467,7 @@
             // 
             // confTxtb
             // 
-            this.confTxtb.Location = new System.Drawing.Point(621, 10);
+            this.confTxtb.Location = new System.Drawing.Point(707, 10);
             this.confTxtb.Name = "confTxtb";
             this.confTxtb.Size = new System.Drawing.Size(118, 27);
             this.confTxtb.TabIndex = 1;
@@ -502,9 +503,9 @@
             this.tabPage3.Controls.Add(this.searchGspTxtb);
             this.tabPage3.Location = new System.Drawing.Point(4, 29);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(834, 364);
+            this.tabPage3.Size = new System.Drawing.Size(843, 414);
             this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Thói quen mua hàng";
+            this.tabPage3.Text = "GSP";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // button2
@@ -571,6 +572,7 @@
             this.searchGspBtn.TabIndex = 9;
             this.searchGspBtn.Text = "Tìm kiếm";
             this.searchGspBtn.UseVisualStyleBackColor = true;
+            this.searchGspBtn.Click += new System.EventHandler(this.SearchGspBtn_Click);
             // 
             // finAllGSPBtn
             // 
@@ -588,7 +590,7 @@
             this.splitContainer3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer3.Location = new System.Drawing.Point(3, 76);
+            this.splitContainer3.Location = new System.Drawing.Point(6, 75);
             this.splitContainer3.Name = "splitContainer3";
             // 
             // splitContainer3.Panel1
@@ -598,8 +600,8 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.richTextBox1);
-            this.splitContainer3.Size = new System.Drawing.Size(828, 285);
-            this.splitContainer3.SplitterDistance = 591;
+            this.splitContainer3.Size = new System.Drawing.Size(825, 330);
+            this.splitContainer3.SplitterDistance = 509;
             this.splitContainer3.TabIndex = 8;
             // 
             // frequentDgv
@@ -613,7 +615,7 @@
             this.Column7});
             this.frequentDgv.Location = new System.Drawing.Point(3, 3);
             this.frequentDgv.Name = "frequentDgv";
-            this.frequentDgv.Size = new System.Drawing.Size(585, 279);
+            this.frequentDgv.Size = new System.Drawing.Size(503, 324);
             this.frequentDgv.TabIndex = 0;
             // 
             // Column6
@@ -633,7 +635,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextBox1.Location = new System.Drawing.Point(3, 3);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(227, 279);
+            this.richTextBox1.Size = new System.Drawing.Size(306, 324);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
             // 
@@ -669,6 +671,7 @@
             this.searchGspTxtb.Name = "searchGspTxtb";
             this.searchGspTxtb.Size = new System.Drawing.Size(185, 27);
             this.searchGspTxtb.TabIndex = 5;
+            this.searchGspTxtb.TextChanged += new System.EventHandler(this.SearchGspTxtb_TextChanged);
             // 
             // tabPage4
             // 
@@ -683,7 +686,7 @@
             this.tabPage4.Controls.Add(this.label7);
             this.tabPage4.Location = new System.Drawing.Point(4, 29);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(834, 364);
+            this.tabPage4.Size = new System.Drawing.Size(843, 414);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Thống kê";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -723,7 +726,7 @@
             this.splitContainer4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer4.Location = new System.Drawing.Point(3, 81);
+            this.splitContainer4.Location = new System.Drawing.Point(6, 83);
             this.splitContainer4.Name = "splitContainer4";
             // 
             // splitContainer4.Panel1
@@ -733,8 +736,8 @@
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.zedGraphControl2);
-            this.splitContainer4.Size = new System.Drawing.Size(828, 274);
-            this.splitContainer4.SplitterDistance = 400;
+            this.splitContainer4.Size = new System.Drawing.Size(825, 322);
+            this.splitContainer4.SplitterDistance = 398;
             this.splitContainer4.TabIndex = 2;
             // 
             // dataGridView1
@@ -745,7 +748,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(0, 3);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(397, 268);
+            this.dataGridView1.Size = new System.Drawing.Size(395, 316);
             this.dataGridView1.TabIndex = 0;
             // 
             // zedGraphControl2
@@ -762,7 +765,7 @@
             this.zedGraphControl2.ScrollMinX = 0D;
             this.zedGraphControl2.ScrollMinY = 0D;
             this.zedGraphControl2.ScrollMinY2 = 0D;
-            this.zedGraphControl2.Size = new System.Drawing.Size(418, 268);
+            this.zedGraphControl2.Size = new System.Drawing.Size(417, 316);
             this.zedGraphControl2.TabIndex = 0;
             this.zedGraphControl2.UseExtendedPrintDialog = true;
             // 
@@ -818,9 +821,9 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
             this.toolStripProgressBar1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 424);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 474);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(863, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(872, 22);
             this.statusStrip1.TabIndex = 4;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -842,7 +845,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(863, 446);
+            this.ClientSize = new System.Drawing.Size(872, 496);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.label1);
@@ -851,7 +854,7 @@
             this.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Phân tích mua hàng";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
